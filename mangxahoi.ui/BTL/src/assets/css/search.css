@@ -1,0 +1,93 @@
+.cover-search .filter-title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    color: var(--blue);
+    display: flex;
+    align-items: baseline;
+}
+
+.string-key-word {
+    font-weight: 400;
+    max-width: 190px;
+    color: #111111;
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.cover-search .left-content {
+    width: 250px;
+    background-color: #FFFFFF;
+}
+
+.cover-search .news-icon2 {
+    background-image: url('../img/icon1.svg');
+    min-width: 24px;
+    min-height: 24px;
+    height: 24px;
+    width: 24px;
+    background-position: -1488px -256px;
+    margin-left: 10px;
+}
+
+.cover-search .left-content-item {
+    width: 95%;
+}
+
+.cover-search .post-box {
+    margin-left: 220px;
+}
+
+.cover-search .cover-pagination-post {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cover-search .list-user-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: auto;
+    background-color: #F0F2F5;
+    height: fit-content;
+}
+
+
+.x-stringkw {
+    color: black;
+    font-size: 11px;
+    cursor: pointer;
+    margin-bottom: auto;
+}
+
+.cover-search .user-box .infor-user .name-user {
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: 8px;
+    color: black;
+    cursor: pointer;
+}
+
+.cover-search .user-box .infor-user .name-user:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.cover-search .user-box .infor-user .gender-user {
+    font-size: 14px;
+    margin-left: 8px;
+    color: black;
+    font-weight: 600;
+}
+
+.cover-search .user-box .infor-user .address-user {
+    font-size: 16px;
+    margin-left: 8px;
+    color: black;
+}

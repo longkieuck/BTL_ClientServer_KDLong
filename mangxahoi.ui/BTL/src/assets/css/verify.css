@@ -1,0 +1,22 @@
+.cover-verify .input-verify{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+.cover-verify .verify{
+    margin: 57px 5px;
+    width: 455px;
+    height: 48px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 15px;
+    padding: 0px 10px;
+}
+.cover-verify .verify:focus{
+    border: 1px solid #2181e7;
+}
+.cover-verify .verify::placeholder{
+    color: #ccc;
+}
