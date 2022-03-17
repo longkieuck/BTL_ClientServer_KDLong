@@ -4,28 +4,19 @@
         Thông báo
       </div>
       <div class="notify-mess-content">
-        <div v-for="noti in listNotify" :key="noti.gid" class="a-notify-mess">
+        <div v-for="noti in listNotify" :key="noti.Id" class="a-notify-mess">
           <div
             class="avatar avatar-notify-mess"
-            :style="imageByUser(noti.userID1)"
-          ></div>
+          >
+            <img  :src="bindingUrlImage(noti.UserIdAction + '_.jpg')"/>
+          </div>
           <div class="text-notify-mess">
-            <div class="username-notify-mess">{{ noti.fullNameFriend }}</div>
             <div
-              v-if="noti.action == 1"
-              class="content-notify-mess"
-              :class="{ 'mess-unseen': noti.isSeen != 1 }"
+              class="content-notify-mess-n"
             >
-              Đã thích bài viết của bạn
+              {{noti.Content}}
             </div>
-            <div
-              v-else
-              class="content-notify-mess"
-              :class="{ 'mess-unseen': noti.isSeen != 1 }"
-            >
-              Đã bình luận bài viết của bạn
-            </div>
-            <div class="time-notify-mess">{{ noti.createdTimeST }}</div>
+            <div class="time-notify-mess">{{ noti.CreateDateString }}</div>
           </div>
         </div>
       </div>
@@ -33,13 +24,27 @@
 </template>
 
 <script>
-    export default {
-        data(){
-            return{
-                listNotify:[]
-            }
+import { BASE_URL } from "../configs/index";
+export default {
+    created(){
+      console.log(this.listNotify)
+    },
+    props:{
+        listNotify:{
+            type: Array,
+            default: null
         }
+    },
+    data(){
+        return{
+        }
+    },
+    methods:{
+      bindingUrlImage(fileName){
+          return `${BASE_URL}posts/${fileName}`;
+      },
     }
+}
 </script>
 
 <style>
@@ -88,12 +93,9 @@
     font-size: 14px;
     font-weight: 600;
 }
-.content-notify-mess {
+.content-notify-mess-n {
     font-size: 13px;
     max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 .mess-unseen {
     color: #1876f2;

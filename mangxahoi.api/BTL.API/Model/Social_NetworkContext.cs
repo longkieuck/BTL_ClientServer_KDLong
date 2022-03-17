@@ -190,11 +190,15 @@ namespace BTL.API.Model
                     .HasColumnName("create_date")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Url)
-                    .HasMaxLength(255)
-                    .HasColumnName("url");
+                entity.Property(e => e.PostId).HasColumnName("post_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.Property(e => e.hasSeen)
+                    .HasColumnType("int")
+                    .HasColumnName("has_seen");
+
+                entity.Property(e => e.UserIdAction).HasColumnName("user_id_action");
             });
 
             modelBuilder.Entity<Post>(entity =>

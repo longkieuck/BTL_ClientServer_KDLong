@@ -52,7 +52,7 @@
 </script>
 
 <style>
-.notify-mess-box {
+.notify-mess-box-m {
     position: fixed;
     height: 370px;
     width: 270px;
@@ -64,7 +64,7 @@
     box-shadow: 0 1px 12px rgb(0 0 0 / 40%);
 }
 .mess-box {
-    right: 150px;
+    right: 140px !important;
 }
 .notify-mess-title {
     height: 35px;

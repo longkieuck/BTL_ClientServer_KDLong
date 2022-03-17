@@ -245,9 +245,24 @@ namespace SocialNetwork.Controllers
             await _db.Comments.AddAsync(comment);
             var post = await _db.Posts.FindAsync(comment.PostId);
             post.CommentCount = post.CommentCount + 1;
+
+            if(comment.UserId != post.UserId)
+            {
+                Notify newNotify = new Notify();
+                newNotify.Id = Guid.NewGuid();
+                newNotify.Content = comment.UserName + " đã bình luận bài viết của bạn!";
+                newNotify.PostId = comment.PostId;
+                newNotify.UserId = post.UserId;
+                newNotify.hasSeen = 0;// Chưa xem
+                newNotify.UserIdAction = comment.UserId;
+                await _db.Notifies.AddAsync(newNotify);
+            }
+
             await _db.SaveChangesAsync();
             res.Success = true;
             res.Data = comment;
+
+
             return res;
         }
 
@@ -258,6 +273,7 @@ namespace SocialNetwork.Controllers
             userLike.Id = Guid.NewGuid();
             var liked =  _db.UserLikes.Where(_ => _.PostId == userLike.PostId && _.UserId == userLike.UserId).FirstOrDefault();
             var post = await _db.Posts.FindAsync(userLike.PostId);
+            var infoUserLike = await _db.UserTbs.FindAsync(userLike.UserId);
             if (liked != null)
             {
                 _db.UserLikes.Remove(liked);
@@ -269,6 +285,19 @@ namespace SocialNetwork.Controllers
                 await _db.UserLikes.AddAsync(userLike);
                 post.LikesCount = post.LikesCount + 1;
                 userLike.isLike = true;
+
+                if (userLike.UserId != post.UserId)
+                {
+                    Notify newNotify = new Notify();
+                    newNotify.Id = Guid.NewGuid();
+                    newNotify.Content = infoUserLike.FullName + " đã thích bài viết của bạn!";
+                    newNotify.PostId = post.Id;
+                    newNotify.UserId = post.UserId;
+                    newNotify.hasSeen = 0;// Chưa xem
+                    newNotify.UserIdAction = userLike.UserId;
+                    await _db.Notifies.AddAsync(newNotify);
+                }
+
             }
             await _db.SaveChangesAsync();
             res.Success = true;

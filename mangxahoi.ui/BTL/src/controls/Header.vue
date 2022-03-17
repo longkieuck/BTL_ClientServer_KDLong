@@ -14,22 +14,22 @@
         <div class="full-name">
           {{ user.FullName }}
         </div>
-        <div class="mess-icon" @click="showHideMessBox()">
+        <div class="mess-icon" @click="handleMessBox()">
           <!-- <div class="count-mess-noti">
             88
           </div> -->
         </div>
 
-        <div class="noti-icon" @click="handleFormNotify()">
-          <!-- <div class="count-mess-noti">
-            88
-          </div> -->
+        <div class="noti-icon" @click="handleNotifyBox()">
+          <div v-if="notiCount != 0" class="count-mess-noti">
+            {{notiCount}}
+          </div>
         </div>
 
         <div class="logout-icon" @click="logout()"></div>
       </div>
-      <MesageNotifyBox v-if="false"/>
-      <NotifyBox v-if="false"/>
+      <MesageNotifyBox v-if="showMessBox"/>
+      <NotifyBox v-if="showNotifyBox" :listNotify="listNotify"/>
     </div>
 </template>
 
@@ -39,55 +39,94 @@ import MesageNotifyBox from '../controls/MesageNotifyBox.vue'
 import NotifyBox from '../controls/NotifyBox.vue'
 import { mapActions, mapState  } from "vuex";
 import { BASE_URL } from "../configs/index";
+import axios from "axios";
+export default {
+    components:{
+        SearchBox,
+        MesageNotifyBox,
+        NotifyBox
+    },
+    data(){
+      return {
+        currentItem: {},
+        showNotifyBox: false,
+        showMessBox:false,
+        notiCount:0,
+        messCount:0,
+        listNotify:[]
+      }
+    },
+    created(){
+      let me = this;
+      let userData = localStorage.getItem('currentUser');
+      if((!me.user || (me.user && !me.user.Id)) && userData){
+        me.currentItem = JSON.parse(userData);
+        me.currentItem.avatar = me.currentItem.Id + '_.jpg';
+        me.setUser(me.currentItem);
+      }
 
-    export default {
-        components:{
-            SearchBox,
-            MesageNotifyBox,
-            NotifyBox
+      this.loadNotify()
+      // document.body.addEventListener("click", this.clickHideBox, true);
+    },
+    methods:{
+        ...mapActions("user", ["setUser", "setDefaultForState" ]),
+        // clickHideBox(){
+        //   this.showNotifyBox = false
+        //   this.showMessBox = false
+        // },
+        loadNotify(){
+          let me = this
+          axios.get(`${BASE_URL}Notify?user_id=${me.currentItem.Id}&page=1&record=20`)
+                .then(res =>{
+                    me.notiCount = res.data.TotalRecord
+                    me.listNotify = res.data.Data
+                  }
+                )
+                .catch(e =>{
+                    console.log(e)
+                    this.showNotification("Chưa bật server","error")
+                })
         },
-        data(){
-          return {
-            currentItem: {}
-          }
+        handleNotifyBox(){
+          this.showNotifyBox = !this.showNotifyBox
+          this.showMessBox = false
         },
-        created(){
+        handleMessBox(){
+          this.showMessBox = !this.showMessBox
+          this.showNotifyBox = false
+        },
+        goToNewFeed() {
+            this.$router.push({ path: "/newfeed" });
+        },
+        logout(){
           let me = this;
-          let userData = localStorage.getItem('currentUser');
-          if((!me.user || (me.user && !me.user.Id)) && userData){
-            me.currentItem = JSON.parse(userData);
-            me.currentItem.avatar = me.currentItem.Id + '_.jpg';
-            me.setUser(me.currentItem);
+          this.$router.replace({ path: "/login" });
+          localStorage.setItem('currentUser', null);
+          me.setUser(null);
+          if (this.webSocket != null) {
+            this.webSocket.emit("userOff", this.user.Id);
+            this.webSocket.disconnect();
           }
+          this.setDefaultForState();
+          me.$router.push({ path: "/login" });
         },
-        methods:{
-           ...mapActions("user", ["setUser", "setDefaultForState" ]),
-            goToNewFeed() {
-                this.$router.push({ path: "/newfeed" });
-            },
-            logout(){
-              let me = this;
-              this.$router.replace({ path: "/login" });
-              localStorage.setItem('currentUser', null);
-              me.setUser(null);
-              if (this.webSocket != null) {
-                this.webSocket.emit("userOff", this.user.Id);
-                this.webSocket.disconnect();
-              }
-              this.setDefaultForState();
-              me.$router.push({ path: "/login" });
-            },
-            bindingUrlImage(fileName){
-                return `${BASE_URL}posts/${fileName}`;
-            },
+        bindingUrlImage(fileName){
+            return `${BASE_URL}posts/${fileName}`;
         },
-        computed:{
-          ...mapState({
-            user:(state)=>state.user.user,
-            webSocket:(state)=>state.user.webSocket
-          })
-        }
+        showNotification(message, type) {
+        this.$notification[type]({
+            message,
+            duration: 2,
+        });
+      },
+    },
+    computed:{
+      ...mapState({
+        user:(state)=>state.user.user,
+        webSocket:(state)=>state.user.webSocket
+      })
     }
+}
 </script>
 
 <style>

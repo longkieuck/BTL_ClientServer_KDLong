@@ -10,6 +10,7 @@ namespace SocialNetwork.Common
         public string Message { get; set; }
         public bool Success { get; set; } = true;
         public object Data { get; set; }
+
         public int ErrorCode { get; set; }
     }
 }
