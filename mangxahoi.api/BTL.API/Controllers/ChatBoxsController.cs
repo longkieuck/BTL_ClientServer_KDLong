@@ -74,6 +74,16 @@ namespace SocialNetwork.Controllers
             res.Data = mess;
             return res;
         }
+        [HttpGet("info")]
+        public async Task<ActionResult<PagingData>> GetChatBoxInfo(Guid? id)
+        {
+            var pagingData = new PagingData();
+            var records = await _db.ChatBoxes.FindAsync( id);
+
+            pagingData.Data = records;
+            //Tổng số bản ghi
+            return pagingData;
+        }
         /**
          * Hàm truyền vào 2 userId và lấy về chat id
          * Nếu có r thì trả về chatbox tương ứng.

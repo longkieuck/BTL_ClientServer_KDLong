@@ -122,16 +122,14 @@ namespace SocialNetwork.Controllers
                 res.Data = null;
             }
             Dictionary<string, object> result = new Dictionary<string, object>();
+
+            post.post_image = _db.Images.Where(_ => _.PostId == post.Id).ToList();
+            post.CreateDateString = this.ChuyenThoiGian((DateTime.Now.Subtract(post.CreateDate).Hours + DateTime.Now.Subtract(post.CreateDate).Days * 24), DateTime.Now.Subtract(post.CreateDate).Minutes, DateTime.Now.Subtract(post.CreateDate).Seconds);
             result.Add("post", post);
-            //Lấy post image
-            var post_image = _db.Images.Where(_ => _.PostId == post.Id);
-            result.Add("post_image", post_image);
-            //Lấy post comment
-            var post_comment = _db.Comments.Where(_ => _.PostId == post.Id);
-            result.Add("post_comment", post_comment);
             res.Data = result;
             res.Success = true;
             return res;
+
         }
 
         [HttpPost]

@@ -15,9 +15,9 @@
           {{ user.FullName }}
         </div>
         <div class="mess-icon" @click="handleMessBox()">
-          <!-- <div class="count-mess-noti">
-            88
-          </div> -->
+          <div v-if="messCount != 0" class="count-mess-noti">
+            {{messCount}}
+          </div>
         </div>
 
         <div class="noti-icon" @click="handleNotifyBox()">
@@ -28,7 +28,7 @@
 
         <div class="logout-icon" @click="logout()"></div>
       </div>
-      <MesageNotifyBox v-if="showMessBox"/>
+      <MesageNotifyBox v-if="showMessBox" :listMessNotify="listMessNotify"/>
       <NotifyBox v-if="showNotifyBox" :listNotify="listNotify"/>
     </div>
 </template>
@@ -39,7 +39,7 @@ import MesageNotifyBox from '../controls/MesageNotifyBox.vue'
 import NotifyBox from '../controls/NotifyBox.vue'
 import { mapActions, mapState  } from "vuex";
 import { BASE_URL } from "../configs/index";
-import axios from "axios";
+// import axios from "axios";
 export default {
     components:{
         SearchBox,
@@ -51,9 +51,9 @@ export default {
         currentItem: {},
         showNotifyBox: false,
         showMessBox:false,
-        notiCount:0,
-        messCount:0,
-        listNotify:[]
+      
+        // notiCount:0,
+        // listNotify:[]
       }
     },
     created(){
@@ -66,27 +66,11 @@ export default {
       }
 
       this.loadNotify()
+      this.loadMessNotify()
       // document.body.addEventListener("click", this.clickHideBox, true);
     },
     methods:{
-        ...mapActions("user", ["setUser", "setDefaultForState" ]),
-        // clickHideBox(){
-        //   this.showNotifyBox = false
-        //   this.showMessBox = false
-        // },
-        loadNotify(){
-          let me = this
-          axios.get(`${BASE_URL}Notify?user_id=${me.currentItem.Id}&page=1&record=20`)
-                .then(res =>{
-                    me.notiCount = res.data.TotalRecord
-                    me.listNotify = res.data.Data
-                  }
-                )
-                .catch(e =>{
-                    console.log(e)
-                    this.showNotification("Chưa bật server","error")
-                })
-        },
+        ...mapActions("user", ["setUser", "setDefaultForState","loadNotify","loadMessNotify" ]),
         handleNotifyBox(){
           this.showNotifyBox = !this.showNotifyBox
           this.showMessBox = false
@@ -104,7 +88,6 @@ export default {
           localStorage.setItem('currentUser', null);
           me.setUser(null);
           if (this.webSocket != null) {
-            this.webSocket.emit("userOff", this.user.Id);
             this.webSocket.disconnect();
           }
           this.setDefaultForState();
@@ -123,7 +106,11 @@ export default {
     computed:{
       ...mapState({
         user:(state)=>state.user.user,
-        webSocket:(state)=>state.user.webSocket
+        webSocket:(state)=>state.user.webSocket,
+        notiCount:(state)=>state.user.notiCount,
+        listNotify:(state)=>state.user.listNotify,
+        messCount:(state)=>state.user.messCount,
+        listMessNotify:(state)=>state.user.listMessNotify,
       })
     }
 }

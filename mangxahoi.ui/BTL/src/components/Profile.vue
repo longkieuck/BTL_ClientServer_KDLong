@@ -177,22 +177,27 @@ export default {
   created() {
     //Lấy dữ liệu current user
     let userData = localStorage.getItem('currentUser');
-    if(userData){
-      this.current_user = JSON.parse(userData)
-    }
-    if (this.$route.params.id == this.user.Id) {
-      this.userProfile = this.user
-    } else {
-      axios
-        .get(
-          `${BASE_URL}Users/detail?id=${this.$route.params.id}`
-        )
-        .then((res) => {
-          this.userProfile = res.data.Data.user_data
-        });
-    }
+    if(userData || this.user.Id){
+      
+      if(userData){
+        this.current_user = JSON.parse(userData)
+      }
+      if (this.$route.params.id == this.user.Id) {
+        this.userProfile = this.user
+      } else {
+        axios
+          .get(
+            `${BASE_URL}Users/detail?id=${this.$route.params.id}`
+          )
+          .then((res) => {
+            this.userProfile = res.data.Data.user_data
+          });
+      }
 
-    this.loadListPost();
+      this.loadListPost();
+    }else{
+      this.$router.replace({ path: "/newfeed" });
+    }
     //load tong so post
 
   },

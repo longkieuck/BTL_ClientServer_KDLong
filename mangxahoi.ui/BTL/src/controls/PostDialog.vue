@@ -126,6 +126,9 @@ export default {
       this.$router.push({ name: "profile", params: { id: id } });
     },
      bindingUrlImage(fileName){
+        if(!fileName){
+          return `${BASE_URL}posts/${this.post.post_image[0].Url}`
+        }
         return `${BASE_URL}posts/${fileName}`;
     },
     hideDialog(){

@@ -22,8 +22,7 @@ export default {
     }),
   },
   beforeDestroy(){
-    if(this.user.gid){
-      this.webSocket.emit("userOff", this.user.Id)
+    if(this.user.Id){
       this.webSocket.disconnect()
     }
   }

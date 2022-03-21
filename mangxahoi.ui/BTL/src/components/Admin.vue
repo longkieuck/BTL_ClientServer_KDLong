@@ -138,7 +138,11 @@ export default {
   },
   created() {
     //load list user
-    this.getUserByCodition()
+    if(this.user.UserName == 'admin')
+      this.getUserByCodition()
+    else{
+      this.$router.replace({ path: "/newfeed" });
+    }
   },
   data() {
     return {
@@ -372,7 +376,9 @@ export default {
     }
   },
   computed: {
-    ...mapState({}),
+    ...mapState({
+      user: (state) => state.user.user
+    }),
   },
   watch: {
     // whenever question changes, this function will run

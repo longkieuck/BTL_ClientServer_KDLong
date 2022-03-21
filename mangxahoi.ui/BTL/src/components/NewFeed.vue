@@ -151,7 +151,7 @@
               @change="changePostPage"
             />
           </div>
-          <chat-box/>
+          
         </div>
 
         <div class="cover-group" v-show="isShowGroup == true">
@@ -278,6 +278,9 @@
               <div class="user-name">
                 {{ oneUser.FullName }}
               </div>
+              <div  class="user-active">
+                {{oneUser.Address}}
+              </div>
             </div>
           </div>
         </div>
@@ -359,6 +362,8 @@
           </div>
         </div>
         </div>
+    <PostDialog :post="postNotify" v-if="showPostNotify" @hideDialog="hidePostNotify"/>
+    <chat-box/>
   </div>
 </template>
 
@@ -372,6 +377,7 @@ import AddMemberDialog from '../controls/AddMemberDialog.vue';
 import InputSearch from '../controls/InputSearch.vue';
 import UserInfoBox from '../controls/UserInfoBox.vue';
 import PostBox from '../controls/PostBox.vue';
+import PostDialog from "../controls/PostDialog.vue";
 export default {
   name: "NewFeed",
   components:{
@@ -380,7 +386,8 @@ export default {
     AddMemberDialog,
     InputSearch,
     PostBox,
-    UserInfoBox
+    UserInfoBox,
+    PostDialog
   },
   data() {
     return {
@@ -443,13 +450,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions("common", [
+    ...mapActions("user", ["setUser",
+      "initSocket",
+      "hidePostNotify",
       "openChatBox",
       "loadListMessage",
       "setDefaultForState"
-    ]),
-    ...mapActions("user", ["setUser",
-      "initSocket"
     ]),
     loadUser(){
       axios
@@ -600,7 +606,6 @@ export default {
       localStorage.setItem('currentUser', null);
       me.setUser(null);
       if (this.webSocket != null) {
-        this.webSocket.emit("userOff", this.user.Id);
         this.webSocket.disconnect();
       }
       this.setDefaultForState();
@@ -762,11 +767,8 @@ export default {
       user: (state) => state.user.user,
       webSocket: (state) => state.user.webSocket,
       userOnline: (state) => state.user.userOnline,
-
-      listMsgNotify: (state) => state.user.listMsgNotify,
-      countMsgNew: (state) => state.user.countMsgNew,
-      listNotify: (state) => state.user.listNotify,
-      countNotify: (state) => state.user.countNotify,
+      postNotify: (state) => state.user.postNotify,
+      showPostNotify: (state) => state.user.showPostNotify
     }),
     searchUserInGroup(){
       if(this.listUser && this.group.search){

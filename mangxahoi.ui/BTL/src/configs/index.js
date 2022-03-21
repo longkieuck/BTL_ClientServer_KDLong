@@ -8,8 +8,14 @@ export const defaultState = {
     stringKeyWord: '',
     webSocket: null,
     userOnline: {},
-    listMsgNotify: [],
-    countMsgNew: 0,
-    listNotify: [],
-    countNotify: 0,
+    postNotify:{},
+    showPostNotify:false,
+    notiCount:0,
+    listNotify:[],
+    messCount:0,
+    listMessNotify:[],
+    isShowChatBox : false,
+    userChat:{},
+    chatBoxData : {},
+    listMessage : []
 }

@@ -146,11 +146,6 @@ export default {
       user: (state) => state.user.user,
       webSocket: (state) => state.user.webSocket,
       userOnline: (state) => state.user.userOnline,
-
-      listMsgNotify: (state) => state.user.listMsgNotify,
-      countMsgNew: (state) => state.user.countMsgNew,
-      listNotify: (state) => state.user.listNotify,
-      countNotify: (state) => state.user.countNotify,
     }),
   },
   methods: {

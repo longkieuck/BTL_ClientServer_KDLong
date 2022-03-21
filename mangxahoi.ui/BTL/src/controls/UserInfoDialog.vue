@@ -133,7 +133,7 @@ export default {
         }
     },
     methods:{
-      ...mapActions("common", [
+      ...mapActions("user", [
         "openChatBox",
         "loadListMessage"
       ]),
