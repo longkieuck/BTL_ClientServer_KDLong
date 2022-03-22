@@ -235,7 +235,6 @@ export default {
     logout() {
       this.$router.replace({ path: "/login" });
       if (this.webSocket != null) {
-        this.webSocket.emit("userOff", this.user.Id);
         this.webSocket.disconnect();
       }
       this.setDefaultForState()

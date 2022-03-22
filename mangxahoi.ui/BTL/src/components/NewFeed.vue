@@ -216,49 +216,7 @@
             </div>
             <PostBox v-for="(post, index) in listPost" :key="index" :post="post" @removePost="handleRemovePost"/>
         </div>
-         <div class="modal" v-if="isShowFormAddMember">
-          <div class="modal-overlay" @click="isShowFormAddMember = false"></div>
-          <div class="modal-body">
-            <div class="title-register">
-              <div class="title">
-                <div class="register-name">
-                  <span style="font-size: 25px;"> <b>Thêm bớt thành viên</b> </span>
-                </div>
-              </div>
-            </div>
-            <div class="form-register">
-              <div class="left-register">
-                <div class="header-list">
-                  <div style="margin:10px">Thành viên:</div>
-                  <input v-model="group.search" @input="searchUserInGroup()" placeholder="Tìm kiếm" />
-                </div>
-                <div class="list-check add-member">
-                  <div class="check-list-item" v-for="oneUser in searchUserInGroup" :key="oneUser.Id">
-                    <div class="check-box">
-                      <input type="checkbox" v-model="oneUser.isCheck">
-                    </div>
-                    <div class="user-info">
-                       <div class="avatar">
-                          <img :src="bindingUrlImage(oneUser.Id + '_.jpg')"/>
-                        </div>
-                        <div class="user-name">
-                            {{ oneUser.FullName }}
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="in-register">
-                  <div class="register-btn" @click="editMemberGroup()">
-                    <span style="color: #ffffff; font-size: 20px;">
-                      <b>Lưu</b>
-                    </span
-                    >
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div>
-        </div>
+         
       </div>
       <div class="right-content">
         <div class="contact-box" v-if="isShowGroup">
@@ -363,6 +321,49 @@
         </div>
         </div>
     <PostDialog :post="postNotify" v-if="showPostNotify" @hideDialog="hidePostNotify"/>
+    <div class="modal" v-if="isShowFormAddMember">
+          <div class="modal-overlay" @click="isShowFormAddMember = false"></div>
+          <div class="modal-body">
+            <div class="title-register">
+              <div class="title">
+                <div class="register-name">
+                  <span style="font-size: 25px;"> <b>Thêm bớt thành viên</b> </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-register">
+              <div class="left-register">
+                <div class="header-list">
+                  <div style="margin:10px">Thành viên:</div>
+                  <input v-model="group.search" @input="searchUserInGroup()" placeholder="Tìm kiếm" />
+                </div>
+                <div class="list-check add-member">
+                  <div class="check-list-item" v-for="oneUser in searchUserInGroup" :key="oneUser.Id">
+                    <div class="check-box">
+                      <input type="checkbox" v-model="oneUser.isCheck">
+                    </div>
+                    <div class="user-info">
+                       <div class="avatar">
+                          <img :src="bindingUrlImage(oneUser.Id + '_.jpg')"/>
+                        </div>
+                        <div class="user-name">
+                            {{ oneUser.FullName }}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="in-register">
+                  <div class="register-btn" @click="editMemberGroup()">
+                    <span style="color: #ffffff; font-size: 20px;">
+                      <b>Lưu</b>
+                    </span
+                    >
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        </div>
     <chat-box/>
   </div>
 </template>
@@ -474,13 +475,8 @@ export default {
           `${BASE_URL}posts?user_id=${me.current_user.Id}&page=${me.postPage}&record=${me.PAGE_SIZE}`,
         )
         .then((res) => {
-          me.listAllPost = res.data.Data;
+          me.listPost = res.data.Data;
           me.totalPost = res.data.TotalRecord
-          if(me.group_now.Id){
-            me.listPost = me.listAllPost.filter(_=>_.GroupId == me.group_now.Id);
-          }else{
-            me.listPost = me.listAllPost.filter(_=>_.GroupId == null);
-          }
         })
         
     },
@@ -496,6 +492,7 @@ export default {
         });
     },
     viewGroup(group){
+      let me = this;
       //Load danh sách user của group này
       axios
         .get(
@@ -503,14 +500,21 @@ export default {
         )
         .then((res) => {
           if(res.data.Success){
-            this.lstUserByGroup = res.data.Data;
+            me.lstUserByGroup = res.data.Data;
           }
         });
       //Lấy post của group này
-      this.listPost = this.listAllPost.filter(_=>_.GroupId == group.Id);
-      this.isShowGroup = true;
-      this.group_now = group;
-      this.typeShow = group.Id;
+      me.isShowGroup = true;
+      me.group_now = group;
+      me.typeShow = group.Id;
+
+      axios
+        .get(
+          `${BASE_URL}posts?user_id=${me.current_user.Id}&group_id=${group.Id}&page=${me.postPage}&record=${me.PAGE_SIZE}`,
+        )
+        .then((res) => {
+          me.listPost = res.data.Data;
+        })
     },
     addMember(){
       //Đánh dấu thành viên của nhóm trong listUser
@@ -560,24 +564,7 @@ export default {
       let container = this.$el.querySelector('#scrollingChat')
       container.scrollTop = container.scrollHeight
     },
-    likePost(index) {
-      if (this.user.gid) {
-        this.listLikes[`${index}`] = true;
-        this.listPost[index].countLike += 1;
-
-        axios.post(`${BASE_URL}userLikePostRsServiceRest/addDTO/`, {
-          userId: this.user.gid,
-          postId: this.listPost[index].gid,
-          // fullName:
-        });
-        this.webSocket.emit("notify", this.listPost[index].userId);
-      } else {
-        this.showNotification(
-          "Bạn phải đăng nhập để thực hiện chức năng này!",
-          "error"
-        );
-      }
-    },
+    
     
     hideChatBox() {
       this.userChat = null;

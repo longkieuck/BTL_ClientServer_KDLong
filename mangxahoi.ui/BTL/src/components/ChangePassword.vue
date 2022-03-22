@@ -158,10 +158,6 @@ export default {
             if(res.data.Success == true){
               this.showNotification("Đổi mật khẩu thành công!", "success");
               this.$router.replace({ path: "/login" });
-              // if (this.webSocket != null) {
-              //   this.webSocket.emit("userOff", this.user.gid);
-              //   this.webSocket.disconnect();
-              // }
               this.setDefaultForState()
             }else{
                 if (this.oldPass != this.user.passWord) {

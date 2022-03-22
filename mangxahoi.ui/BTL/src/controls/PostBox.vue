@@ -196,6 +196,7 @@ export default {
               me.post.lstCmt.push(res.data.Data);
               me.post.Comment = "";
               me.post.CommentCount++;
+              me.webSocket.emit("notify", me.post.UserId);
             }
           });
       }
@@ -255,6 +256,7 @@ export default {
             if (res.data.Data.isLike) {
               me.post.LikesCount++;
               me.post.isLike = true;
+              me.webSocket.emit("notify", me.post.UserId);
             } else {
               me.post.LikesCount--;
               me.post.isLike = false;

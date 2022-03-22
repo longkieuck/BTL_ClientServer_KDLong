@@ -2,7 +2,7 @@
   <div class="chat-box" v-if="isShowChatBox">
     <div class="top-chat-box">
       <div class="user-chat-box">
-        <div class="avatar">
+        <div class="avatar avt-chat" @click="goToProfie(userChat.Id)">
           <img :src="bindingUrlImage(userChat.Id + '_.jpg')" />
         </div>
         <div class="item-descrip">
@@ -80,8 +80,12 @@ export default {
     },
     scrollToBottomChatBox() {
       this.webSocket.emit("message", this.userChat.Id);
+      this.webSocket.emit("notifyMess", this.userChat.Id);
       // let container = this.$el.querySelector('#scrollingChat')
       // container.scrollTop = container.scrollHeight
+    },
+    goToProfie(id) {
+      this.$router.push({ name: "profile", params: { id: id } });
     },
   },
   computed: {
@@ -263,5 +267,8 @@ export default {
   top: -45px;
   right: -89%;
   background-position: -240px -120px;
+}
+.avt-chat{
+  cursor: pointer;
 }
 </style>

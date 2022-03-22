@@ -22,12 +22,17 @@ const actions = {
             );
             console.log('user online',userOnline)
         })
-        // await context.state.webSocket.on("notifyLoad", (userId) => {
-        //     if (userId == context.state.user.gid) {
-        //         payload.loadListPost()
-        //         context.dispatch('loadListNotify')
-        //     }
-        // })
+        await context.state.webSocket.on("notifyLoad", (userId) => {
+            if (userId == context.state.user.Id) {
+                context.dispatch('loadNotify')
+            }
+        })
+
+        await context.state.webSocket.on("notifyMessLoad", (userId) => {
+            if (userId == context.state.user.Id) {
+                context.dispatch('loadMessNotify')
+            }
+        })
     },
     showPostNotify(context,postId){
         axios.get(`${BASE_URL}Posts/detail?id=${postId}`)
@@ -35,7 +40,6 @@ const actions = {
                     context.state.postNotify = res.data.Data.post
                     context.state.showPostNotify = true;
                     context.state.notiCount = context.state.notiCount - 1;
-                    context.state.listNotify = context.state.listNotify.filter(_ => _.PostId != postId)
                   }
                 )
                 .catch(e =>{

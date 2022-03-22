@@ -28,14 +28,23 @@ namespace SocialNetwork.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagingData>> GetPostByPage([FromQuery] Guid user_id, [FromQuery] string search, [FromQuery] int? page = 1, [FromQuery] int? record = 20)
+        public async Task<ActionResult<PagingData>> GetPostByPage([FromQuery] Guid user_id, [FromQuery] Guid group_id, [FromQuery] string search, [FromQuery] int? page = 1, [FromQuery] int? record = 20)
         {
             var pagingData = new PagingData();
-            List<Post> records = await _db.Posts.OrderByDescending(x => x.CreateDate).ToListAsync();
+            List<Post> records = new List<Post>();
+            if (group_id == Guid.Empty)
+            {
+                records = await _db.Posts.Where(x => x.GroupId == null).OrderByDescending(x => x.CreateDate).ToListAsync();
+            }
+            else
+            {
+                records = await _db.Posts.Where(x => x.GroupId == group_id).OrderByDescending(x => x.CreateDate).ToListAsync();
+            }
+                
             //Tìm kiếm
             if (!string.IsNullOrEmpty(search))
             {
-                string sql_search = "select * from post where CHARINDEX(@txtSeach,content) > 0";
+                string sql_search = "select * from post where CHARINDEX(@txtSeach,content) > 0 or CHARINDEX(@txtSeach,full_name) > 0";
                 var param = new SqlParameter("@txtSeach", search);
                 records = _db.Posts.FromSqlRaw(sql_search, param).OrderByDescending(x => x.CreateDate).ToList();
             }

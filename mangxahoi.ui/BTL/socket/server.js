@@ -29,6 +29,11 @@ io.on('connection', (socket) => {
         console.log("id owner post", userId)
     })
 
+    socket.on('notifyMess', (userId) => {
+        socket.broadcast.emit('notifyMessLoad', userId)
+        console.log("id owner post", userId)
+    })
+
     socket.on('userOn', (userId) => {
         userOnline = userOnline.filter(item => item != userId)
         userOnline.push(userId)
