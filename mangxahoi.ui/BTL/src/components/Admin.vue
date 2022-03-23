@@ -125,7 +125,7 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import { BASE_URL } from "../configs/index";
+import { BASE_URL,PAGE_SIZE_CONST } from "../configs/index";
 // import moment from "moment";
 import UserInfoDialog from "../controls/UserInfoDialog.vue";
 import InputSearch from "../controls/InputSearch.vue";
@@ -152,7 +152,7 @@ export default {
       userData: [],
       postData:[],
       strSearch:'',
-      pagination:{current : 1,pageSize : 20 },
+      pagination:{current : 1,pageSize : PAGE_SIZE_CONST },
       userColumns: [
         {
           title: "Họ & Tên",

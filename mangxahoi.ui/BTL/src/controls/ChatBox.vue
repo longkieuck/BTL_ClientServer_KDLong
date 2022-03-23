@@ -81,8 +81,8 @@ export default {
     scrollToBottomChatBox() {
       this.webSocket.emit("message", this.userChat.Id);
       this.webSocket.emit("notifyMess", this.userChat.Id);
-      // let container = this.$el.querySelector('#scrollingChat')
-      // container.scrollTop = container.scrollHeight
+      let container = this.$el.querySelector('#scrollingChat')
+      container.scrollTop = container.scrollHeight
     },
     goToProfie(id) {
       this.$router.push({ name: "profile", params: { id: id } });

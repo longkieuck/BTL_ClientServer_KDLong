@@ -85,7 +85,7 @@ namespace SocialNetwork.Controllers
         public async Task<ActionResult<PagingData>> GetUserByPage([FromQuery] string search, [FromQuery] int? page = 1, [FromQuery] int? record = 20)
         {
             var pagingData = new PagingData();
-            List<UserTb> records = await _db.UserTbs.ToListAsync();
+            List<UserTb> records = await _db.UserTbs.Where(_=>_.UserName != "admin").ToListAsync();
             //Tìm kiếm
             if (!string.IsNullOrEmpty(search))
             {
