@@ -80,7 +80,7 @@
           class="cover-list-post"
           v-if="typeShow != 2 && listPost.length > 0"
         >
-          <PostBox v-for="(post, index) in listPost" :key="index" :post="post" @removePost="handleRemovePost"/>
+          <PostBox v-for="(post) in listPost" :key="post.Id" :post="post" @removePost="handleRemovePost"/>
           <div class="cover-pagination-post" style="margin-left: 200px">
             <a-pagination
               class="pagination-post"

@@ -39,6 +39,7 @@ io.on('connection', (socket) => {
         userOnline.push(userId)
         socket.broadcast.emit('onlineLoad', userOnline)
         // console.log(userId + ' is connected!' + socket.id)
+        IdSocket = IdSocket.filter(_ => _.value != userId)
         IdSocket.push({
             key: socket.id,
             value: userId
@@ -47,8 +48,8 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log(`user ${socket.id} left!`)
-        IdSocket = IdSocket.filter(item => item.key != socket.id)
-        userOnline = IdSocket.map(_ => _.value)
+        IdSocket =  IdSocket.filter(item => item.key != socket.id)
+        userOnline =  IdSocket.map(_ => _.value)
 
         socket.broadcast.emit('onlineLoad', userOnline)
     })

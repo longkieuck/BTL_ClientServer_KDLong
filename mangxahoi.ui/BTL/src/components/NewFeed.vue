@@ -140,7 +140,7 @@
               <div @click="share()" class="share-button">Chia sẻ</div>
             </div>
           </div>
-          <PostBox v-for="(post, index) in listPost" :key="index" :post="post" @removePost="handleRemovePost"/>
+          <PostBox v-for="(post) in listPost" :key="post.Id" :post="post" @removePost="handleRemovePost"/>
           <AddMemberDialog v-show="false"/>
           <div class="cover-pagination-post" style="margin-left: 0px">
             <a-pagination

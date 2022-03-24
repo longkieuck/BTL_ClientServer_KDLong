@@ -127,7 +127,7 @@
             </div>
           </div>
           <div class="personal">
-            <PostBox v-for="(post, index) in listPost" :key="index" :post="post" @removePost="handleRemovePost"/>
+            <PostBox v-for="(post) in listPost" :key="post.Id" :post="post" @removePost="handleRemovePost"/>
             <div class="cover-pagination-post">
               <a-pagination
                 class="pagination-post"

@@ -45,7 +45,7 @@
         </div>
           <div class="more-comment">
             <!-- tổng số like và cmt -->
-            <div class="more-comment-text" @click="showOldComment()" v-if="isShowOldComment">
+            <div class="more-comment-text" @click="showOldComment()" v-if="isShowOldComment && post.CommentCount > 0">
               Xem thêm bình luận
             </div>
           </div>
@@ -115,13 +115,12 @@ export default {
       }),
   },
   created(){
-    this.showOldComment();
+    // this.showOldComment();
   },
   data() {
     return {
       showDialog: false,
-      isShowOldComment: false,
-      page: 0
+      isShowOldComment: true,
     };
   },
   methods:{...mapActions("user", []),
@@ -162,9 +161,8 @@ export default {
     },
     showOldComment() {
       let me = this;
-      me.page++;
       axios
-        .get(`${BASE_URL}posts/post_comment?Id=${me.post.Id}&page=${me.page}&record=10`)
+        .get(`${BASE_URL}posts/post_comment?Id=${me.post.Id}&page=1&record=50`)
         .then((res) => {
           if (!me.post.lstCmt) {
             me.post.lstCmt = [];
@@ -174,11 +172,12 @@ export default {
               me.post.lstCmt.push(cmt);
             }
           });
-          if(res.data.TotalPage <= 1){
-            me.isShowOldComment = false;
-          }else{
-            me.isShowOldComment = true;
-          }
+          me.isShowOldComment = false
+          // if(res.data.TotalPage <= 1){
+          //   me.isShowOldComment = false;
+          // }else{
+          //   me.isShowOldComment = true;
+          // }
         });
     },
     postComment() {
