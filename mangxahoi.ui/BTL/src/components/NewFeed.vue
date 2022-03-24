@@ -456,7 +456,8 @@ export default {
       "hidePostNotify",
       "openChatBox",
       "loadListMessage",
-      "setDefaultForState"
+      "setDefaultForState",
+      "hideChatBox"
     ]),
     loadUser(){
       axios
@@ -507,10 +508,15 @@ export default {
       me.isShowGroup = true;
       me.group_now = group;
       me.typeShow = group.Id;
+      me.loadPostInGroup()
+      
+    },
 
+    loadPostInGroup(){
+      let me = this;
       axios
         .get(
-          `${BASE_URL}posts?user_id=${me.current_user.Id}&group_id=${group.Id}&page=${me.postPage}&record=${me.PAGE_SIZE}`,
+          `${BASE_URL}posts?user_id=${me.current_user.Id}&group_id=${me.group_now.Id}&page=1&record=${me.PAGE_SIZE}`,
         )
         .then((res) => {
           me.listPost = res.data.Data;
@@ -565,10 +571,6 @@ export default {
       container.scrollTop = container.scrollHeight
     },
     
-    
-    hideChatBox() {
-      this.userChat = null;
-    },
     search(e) {
       this.setStringKeyWord(e.target.value);
       this.$router.push({ path: "/search" });
@@ -596,6 +598,7 @@ export default {
         this.webSocket.disconnect();
       }
       this.setDefaultForState();
+      this.hideChatBox()
       me.$router.push({ path: "/login" });
     },
     
@@ -682,7 +685,10 @@ export default {
                 this.file = null;
                 this.urls = [];
                 this.showNotification("Chia sẻ thành công", "success");
-                this.loadListPost();
+                if(this.typeShow != 0 && this.typeShow != 1){
+                  this.loadPostInGroup()
+                }else
+                  this.loadListPost();
               }
             })
             .catch((e) => {
@@ -872,12 +878,15 @@ export default {
 }
 .list-check{
   height: 275px;
+  max-height: 275px;
+  overflow-y: auto;
   width: 480px;
   margin: 0px 0px 10px 10px;
   border: 1px solid #ccc;
 }
 .list-check.add-member{
-  height: 320px;
+  height: 330px;
+  max-height: 330px;
 }
 .check-list-item{
   width: 100%;

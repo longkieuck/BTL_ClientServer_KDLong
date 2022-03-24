@@ -232,13 +232,6 @@ export default {
     bindingUrlImage(fileName){
                 return `${BASE_URL}posts/${fileName}`;
             },
-    logout() {
-      this.$router.replace({ path: "/login" });
-      if (this.webSocket != null) {
-        this.webSocket.disconnect();
-      }
-      this.setDefaultForState()
-    },
 
     goToNewFeed() {
       this.$router.push({ path: "/newfeed" });

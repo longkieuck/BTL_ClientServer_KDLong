@@ -1,5 +1,5 @@
 export const BASE_URL = 'https://localhost:44312/api/'
-export const PAGE_SIZE_CONST = 10
+export const PAGE_SIZE_CONST = 2
 export const defaultState = {
     user: {},
     userProfile: {},

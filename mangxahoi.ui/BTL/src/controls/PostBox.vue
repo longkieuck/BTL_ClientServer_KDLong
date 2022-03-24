@@ -81,7 +81,7 @@
         </div>
         <div class="content-comment">
           <div class="cover-username-text-comment">
-            <div class="username-comment">
+            <div class="username-comment" @click="goToProfie(cmt.UserId)">
               {{ cmt.UserName }}
             </div>
             <div class="text-comment">
@@ -106,6 +106,7 @@
           class="input-comment"
           placeholder="Viết bình luận..."
           v-model="post.Comment"
+          @keyup.enter="postComment()"
         />
         <div @click="postComment()" class="icon-send-comment"></div>
       </div>
@@ -150,6 +151,7 @@ export default {
   },
   methods: {
     ...mapActions("user", []),
+    
     goToProfie(id) {
       this.$router.push({ name: "profile", params: { id: id } });
     },
@@ -484,6 +486,7 @@ export default {
   width: 32px;
   border-radius: 50%;
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .like-time-comment {

@@ -15,13 +15,13 @@
           {{ user.FullName }}
         </div>
         <div class="mess-icon" @click="handleMessBox()">
-          <div v-if="messCount != 0" class="count-mess-noti">
+          <div v-if="messCount > 0" class="count-mess-noti">
             {{messCount}}
           </div>
         </div>
 
         <div class="noti-icon" @click="handleNotifyBox()">
-          <div v-if="notiCount != 0" class="count-mess-noti">
+          <div v-if="notiCount > 0" class="count-mess-noti">
             {{notiCount}}
           </div>
         </div>
@@ -70,7 +70,7 @@ export default {
       // document.body.addEventListener("click", this.clickHideBox, true);
     },
     methods:{
-        ...mapActions("user", ["setUser", "setDefaultForState","loadNotify","loadMessNotify" ]),
+        ...mapActions("user", ["setUser", "setDefaultForState","loadNotify","loadMessNotify","hideChatBox" ]),
         handleNotifyBox(){
           this.showNotifyBox = !this.showNotifyBox
           this.showMessBox = false
@@ -91,6 +91,7 @@ export default {
             this.webSocket.disconnect();
           }
           this.setDefaultForState();
+          this.hideChatBox()
           me.$router.push({ path: "/login" });
         },
         bindingUrlImage(fileName){
