@@ -1,8 +1,14 @@
 import axios from "axios";
 import {  BASE_URL,defaultState } from '../../configs/index'
 import io from "socket.io-client";
+const keyJwt = "Jwt";
+const resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
+// const intance = axios.create({
+//     headers: {
+//         'Authorization': `Bearer ${resToken}`
+//     }
+// });
 const state = {...defaultState }
-
 const actions = {
     async initSocket(context,payload) {
         context.state.webSocket = await io("http://localhost:3000");
@@ -35,7 +41,11 @@ const actions = {
         })
     },
     showPostNotify(context,postId){
-        axios.get(`${BASE_URL}Posts/detail?id=${postId}`)
+        axios.get(`${BASE_URL}Posts/detail?id=${postId}`,{
+            headers: {
+                'Authorization': `Bearer ${resToken}`
+            }
+        })
                 .then(res =>{
                     context.state.postNotify = res.data.Data.post
                     context.state.showPostNotify = true;
@@ -49,7 +59,11 @@ const actions = {
     // showPostNotify:false
     },
     loadNotify(context){
-        axios.get(`${BASE_URL}Notify?user_id=${context.state.user.Id}&page=1&record=20`)
+        axios.get(`${BASE_URL}Notify?user_id=${context.state.user.Id}&page=1&record=20`,{
+            headers: {
+                'Authorization': `Bearer ${resToken}`
+            }
+        })
             .then(res =>{
                 context.state.notiCount = res.data.TotalRecord
                 context.state.listNotify = res.data.Data
@@ -61,7 +75,11 @@ const actions = {
             })
     },
     loadMessNotify(context){
-        axios.get(`${BASE_URL}Notify/mess_notify?user_id=${context.state.user.Id}&page=1&record=20`)
+        axios.get(`${BASE_URL}Notify/mess_notify?user_id=${context.state.user.Id}&page=1&record=20`,{
+            headers: {
+                'Authorization': `Bearer ${resToken}`
+            }
+        })
             .then(res =>{
                     context.state.listMessNotify = res.data.Data
                     if(JSON.stringify(res.data.Data) != JSON.stringify(context.state.loadMessNotify)){
@@ -107,6 +125,11 @@ const actions = {
         axios
         .get(
           `${BASE_URL}ChatBoxs/chatbox_id?userId1=${JSON.parse(userData).Id}&userId2=${oneUser.Id}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${resToken}`
+                }
+            }
         )
         .then((res) => {
             context.state.chatBoxData = {...res.data.Data};
@@ -123,6 +146,11 @@ const actions = {
         axios
         .get(
         `${BASE_URL}ChatBoxs/info?id=${chatBoxId}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${resToken}`
+                }
+            }
         )
         .then((res) => {
             context.state.chatBoxData = {...res.data.Data}
@@ -149,6 +177,11 @@ const actions = {
         axios
         .get(
         `${BASE_URL}ChatBoxs/detail?chat_box_id=${context.state.chatBoxData.Id}&page=1&record=20`,
+        {
+            headers: {
+                'Authorization': `Bearer ${resToken}`
+            }
+        }
         )
         .then((resMess) => {
             context.state.listMessage = [...resMess.data.Data];
@@ -166,6 +199,11 @@ const actions = {
                     isLike: msg == 'isLike' ? 1 : 0,
                     userName: userData.FullName,
                     chatBoxId: context.state.chatBoxData.Id
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${resToken}`
+                    }
                 }
             )
             .then((res)=>{

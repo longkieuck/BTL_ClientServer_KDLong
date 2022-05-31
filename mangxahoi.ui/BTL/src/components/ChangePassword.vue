@@ -98,7 +98,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import axios from "axios";
+// import axios from "axios";
 import { BASE_URL } from "../configs/index";
 export default {
   name: "ChangePassword",
@@ -110,7 +110,13 @@ export default {
       isHidePass4: true,
       isHidePass5: true,
       isHidePass6: true,
+      instance : null
     };
+  },
+  created(){
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
   },
   methods: {
     ...mapActions("user", [
@@ -148,7 +154,7 @@ export default {
           return;
         }
 
-        axios
+        this.$auth.Intance()
           .post(`${BASE_URL}Users/change_password`, {
             id: this.user.Id,
             password: this.oldPass,

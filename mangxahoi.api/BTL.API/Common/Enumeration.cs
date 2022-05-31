@@ -11,4 +11,10 @@ namespace SocialNetwork.Common
         Edit = 1, // Sửa
         Add = 2 //Thêm
     }
+
+    public enum RoleType
+    {
+        Admin = 1,
+        User = 2,
+    }
 }

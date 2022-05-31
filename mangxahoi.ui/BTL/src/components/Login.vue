@@ -77,11 +77,14 @@
 </template>
 
 <script>
-import axios from "axios";
-import { BASE_URL } from "../configs/index";
+// import axios from "axios";
+// import { BASE_URL } from "../configs/index";
 import { mapActions } from "vuex";
 export default {
   name: "Login",
+  created(){
+    console.log(this.$commonFunc.intance);
+  },
   methods: {
     ...mapActions("user", ["setUser"]),
     showFormRegister() {
@@ -90,37 +93,30 @@ export default {
     hideFormRegister() {
       this.isShowFormRegister = false;
     },
-    login() {
-      if (this.UserName != "" && this.Password != "") {
-        let formData = new FormData();
-            formData.append("UserName",  this.UserName);
-            formData.append("Password",  this.Password);
-
-        axios
-          .post(`${BASE_URL}Users/login`,formData,{headers: {
-                  "Content-Type": "multipart/form-data",
-                },})
-          .then((res) => {
-            if (res.data && res.data.Success && res.data.Data != 0) {
-              let userData = res.data.Data.user_data[0]; 
-              delete userData.Password;
-              this.setUser(userData);
-              localStorage.setItem("currentUser", JSON.stringify(userData));
-              if(this.UserName == 'admin' && this.Password == 'admin'){
-                this.$router.push({ path: "/admin" });
-              }else{
-                this.$router.push({ path: "/newfeed" });
-              }
-            } else if(res) {
-              this.showNotification(res.data.Message, "error");
-              this.UserName = "";
-              this.Password = "";
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-            this.showNotification("Có lỗi sảy ra!", "error");
-          });
+    async login() {
+      const me = this;
+      if (me.UserName && me.Password) {
+        let params = {
+          UserName : me.UserName,
+          Password : me.Password
+        }
+        let res = await this.$auth.loginUser(params);
+        if (res && res.Data && res.Data["user_data"]) {
+          let userData = res.Data["user_data"][0]; 
+          delete userData.Password;
+          this.setUser(userData);
+          localStorage.setItem("currentUser", JSON.stringify(userData));
+          if(this.UserName == 'admin' && this.Password == 'admin'){
+            this.$router.push({ path: "/admin" });
+          }else{
+            this.$router.push({ path: "/newfeed" });
+          }
+        } else if(res) {
+          this.showNotification(res.data.Message, "error");
+          this.UserName = "";
+          this.Password = "";
+        }
+        
       } else {
         this.showNotification(
           "Vui lòng nhập đầy đủ Tài khoản và Mật khẩu!",

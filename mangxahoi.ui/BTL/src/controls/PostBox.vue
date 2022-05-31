@@ -117,7 +117,7 @@
 
 <script>
 import { BASE_URL } from "../configs/index";
-import axios from "axios";
+// import axios from "axios";
 import { mapState, mapActions } from "vuex";
 import PostDialog from "../controls/PostDialog.vue";
 export default {
@@ -131,6 +131,9 @@ export default {
     },
   },
   created() {
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
     document.body.addEventListener("click", this.clickToBody, true);
   },
   data() {
@@ -139,6 +142,7 @@ export default {
       showDialog: false,
       url_img: '',
       isShowOldComment: true,
+      instance : null
     };
   },
   computed: {
@@ -156,7 +160,7 @@ export default {
     },
     showOldComment() {
       let me = this;
-      axios
+      this.$auth.Intance()
         .get(`${BASE_URL}posts/post_comment?Id=${me.post.Id}&page=1&record=50`)
         .then((res) => {
           if (!me.post.lstCmt) {
@@ -178,7 +182,7 @@ export default {
     postComment() {
       let me = this;
       if (me.post.Comment) {
-        axios
+        this.$auth.Intance()
           .post(`${BASE_URL}posts/add_comment`, {
             Content: me.post.Comment,
             PostId: me.post.Id,
@@ -225,7 +229,7 @@ export default {
     },
     deletePost() {
       if (this.post.Id) {
-        axios
+        this.$auth.Intance()
           .delete(`${BASE_URL}posts/remove?id=${this.post.Id}`)
           .then((res) => {
             if (res.data.Success) {
@@ -243,7 +247,7 @@ export default {
     },
     likePost() {
       let me = this;
-      axios
+      this.$auth.Intance()
         .post(`${BASE_URL}posts/like_post`, {
           PostId: me.post.Id,
           UserId: me.user.Id,

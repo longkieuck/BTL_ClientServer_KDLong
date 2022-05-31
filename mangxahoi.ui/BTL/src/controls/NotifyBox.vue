@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import { BASE_URL } from "../configs/index";
 
 import { mapActions } from "vuex";
@@ -32,6 +32,9 @@ export default {
   //   PostDialog,
   // },
   created() {
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
     console.log(this.listNotify);
   },
   props: {
@@ -52,7 +55,7 @@ export default {
     },
     showPostDialog(notiId,postId) {
       this.showPostNotify(postId);
-      axios.put(`${BASE_URL}Notify`,{
+      this.$auth.Intance().put(`${BASE_URL}Notify`,{
         id : notiId
       }).then((res) => {
             console.log(res)

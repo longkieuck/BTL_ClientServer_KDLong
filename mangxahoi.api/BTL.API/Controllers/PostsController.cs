@@ -1,4 +1,5 @@
 ﻿using BTL.API.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace SocialNetwork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostsController : ControllerBase
     {
         private readonly Social_NetworkContext _db;
@@ -100,6 +102,7 @@ namespace SocialNetwork.Controllers
             return pagingData;
         }
 
+        [AllowAnonymous]
         [HttpGet("{fileName}")]
         public async Task<IActionResult> GetImage(string fileName)
         {

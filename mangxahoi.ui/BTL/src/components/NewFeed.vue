@@ -369,7 +369,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import { mapState, mapActions } from "vuex";
 import { BASE_URL,PAGE_SIZE_CONST } from "../configs/index";
 import Header from '../controls/Header.vue';
@@ -424,10 +424,14 @@ export default {
       group_now: {},
       listAllPost: [],
       isShowFormAddMember:false,
-      lstUserByGroup: []
+      lstUserByGroup: [],
+      header : {}
     };
   },
   async created() {
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
     //Lấy dữ liệu current user
     let userData = localStorage.getItem('currentUser');
     if(userData){
@@ -460,8 +464,7 @@ export default {
       "hideChatBox"
     ]),
     loadUser(){
-      axios
-        .get(
+      this.$auth.Intance().get(
           `${BASE_URL}Users?page=1&record=20`,
         )
         .then((res) => {
@@ -471,7 +474,7 @@ export default {
     },
     loadListPost() {
       let me = this;
-      axios
+      this.$auth.Intance()
         .get(
           `${BASE_URL}posts?user_id=${me.current_user.Id}&page=${me.postPage}&record=${me.PAGE_SIZE}`,
         )
@@ -482,7 +485,7 @@ export default {
         
     },
     loadGroup(){
-      axios
+      this.$auth.Intance()
         .get(
           `${BASE_URL}GroupPosts/${this.current_user.Id}`,
         )
@@ -495,7 +498,7 @@ export default {
     viewGroup(group){
       let me = this;
       //Load danh sách user của group này
-      axios
+      this.$auth.Intance()
         .get(
           `${BASE_URL}GroupPosts/users?id=${group.Id}`,
         )
@@ -514,7 +517,7 @@ export default {
 
     loadPostInGroup(){
       let me = this;
-      axios
+      this.$auth.Intance()
         .get(
           `${BASE_URL}posts?user_id=${me.current_user.Id}&group_id=${me.group_now.Id}&page=1&record=${me.PAGE_SIZE}`,
         )
@@ -539,7 +542,7 @@ export default {
           this.group_now.list_user = this.listUser.filter(_=>_.isCheck == true);
                     this.group.list_user = this.listUser.filter(_=>_.isCheck == true);
 
-          axios.put(`${BASE_URL}GroupPosts/edit_member`, this.group_now).then((res) => {
+          this.$auth.Intance().put(`${BASE_URL}GroupPosts/edit_member`, this.group_now).then((res) => {
             if(res.data.Success){
               this.isShowFormAddMember = false;
             }else{
@@ -578,8 +581,7 @@ export default {
     
     
     loadListUser() {
-      axios
-        .get(
+      this.$auth.Intance().get(
           `${BASE_URL}Users?page=${this.userPage}&record=${this.PAGE_SIZE}`,
         )
         .then((res) => {
@@ -673,7 +675,7 @@ export default {
           if(this.group_now.Id){
             formData.append("GroupId",this.group_now.Id);
           }
-          axios
+          this.$auth.Intance()
             .post(`${BASE_URL}posts`, formData,
               {headers: {
                 "Content-Type": "multipart/form-data",
@@ -730,7 +732,7 @@ export default {
         if(this.group.GroupName){
           this.group.UserId = this.user.Id;
           this.group.list_user = this.listUser.filter(_=>_.isCheck == true);
-          axios.post(`${BASE_URL}GroupPosts`, this.group).then((res) => {
+          this.$auth.Intance().post(`${BASE_URL}GroupPosts`, this.group).then((res) => {
             if(res.data.Success){
               this.isShowFormAddGroup = false;
               this.listGroup.push(res.data.Data);

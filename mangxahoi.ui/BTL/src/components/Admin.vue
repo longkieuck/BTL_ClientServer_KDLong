@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import { mapState } from "vuex";
 import { BASE_URL,PAGE_SIZE_CONST } from "../configs/index";
 // import moment from "moment";
@@ -137,6 +137,9 @@ export default {
     InputSearch
   },
   created() {
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
     //load list user
     if(this.user.UserName == 'admin')
       this.getUserByCodition()
@@ -241,6 +244,7 @@ export default {
           align:'center'
         },
       ],
+      header : null
     };
   },
   methods: {
@@ -255,8 +259,8 @@ export default {
       }
     },500),
     getUserByCodition(){
-      let me = this;
-      axios.get(`${BASE_URL}Users?search=${this.strSearch}&page=${this.pagination.current}&record=${this.pagination.pageSize}`)
+      const me = this;
+      this.$auth.Intance().get(`${BASE_URL}Users?search=${this.strSearch}&page=${this.pagination.current}&record=${this.pagination.pageSize}`)
                 .then(res =>{
                     me.userData = res.data.Data
                     me.userData.forEach((user)=>{
@@ -275,10 +279,9 @@ export default {
                 })
     },
     getPostByCodition(){
-      axios.get(`${BASE_URL}Posts?search=${this.strSearch}&page=${this.pagination.current}&record=${this.pagination.pageSize}`)
+      this.$auth.Intance().get(`${BASE_URL}Posts?search=${this.strSearch}&page=${this.pagination.current}&record=${this.pagination.pageSize}`)
                 .then(res =>{
                     this.postData = res.data.Data
-
                     const pagination = { ...this.pagination };
                     // Read total count from server
                     // pagination.total = data.totalCount;
@@ -322,28 +325,27 @@ export default {
     },
     onDelete(Id) {
       const dataSource = [...this.userData];
-      this.userData = dataSource.filter(item => item.Id !== Id);
-
-      axios.delete(`${BASE_URL}Users/remove?id=${Id}`)
+      const me = this;
+      me.userData = dataSource.filter(item => item.Id !== Id);
+      this.$auth.Intance().delete(`${BASE_URL}Users/remove?id=${Id}`)
                 .then(res =>{
                     if(res.data.Success == true){
-                      this.showNotification("Xoá thành công!","success")
+                      me.showNotification("Xoá thành công!","success")
                     }else{
-                      this.showNotification("Xoá thất bại","error")
+                      me.showNotification("Xoá thất bại","error")
                     }
                 }
                 )
                 .catch(e =>{
                     console.log(e)
-                    this.showNotification("Chưa bật server","error")
+                    me.showNotification("Chưa bật server","error")
                 })
 
     },
     onDeletePost(Id) {
       const dataSource = [...this.userData];
       this.userData = dataSource.filter(item => item.Id !== Id);
-
-      axios.delete(`${BASE_URL}Posts/remove?id=${Id}`)
+      this.$auth.Intance().delete(`${BASE_URL}Posts/remove?id=${Id}`)
                 .then(res =>{
                     if(res.data.Success == true){
                       this.showNotification("Xoá thành công!","success")

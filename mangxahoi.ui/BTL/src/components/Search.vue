@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import { mapState, mapActions } from "vuex";
 import { BASE_URL,PAGE_SIZE_CONST } from "../configs/index";
 // import moment from "moment";
@@ -113,6 +113,9 @@ export default {
   },
   created() {
     let me = this;
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
           let userData = localStorage.getItem('currentUser');
           if((!me.user || (me.user && !me.user.Id)) && userData){
             me.currentItem = JSON.parse(userData);
@@ -132,6 +135,7 @@ export default {
       totalPost: null,
       PAGE_SIZE: PAGE_SIZE_CONST,
       typeShow: 0, //0 tất cả,1 bài viết,2 liên hệ
+      instance : null
     };
   },
   methods: {
@@ -162,8 +166,7 @@ export default {
     },
  
     loadListPost() {
-      axios
-        .get(
+      this.$auth.Intance().get(
           `${BASE_URL}posts?user_id=${this.user.Id}&search=${this.stringKeyWord}&page=${this.postPage}&record=${this.PAGE_SIZE}`,
         )
         .then((res) => {
@@ -173,7 +176,7 @@ export default {
         
     },
     loadListUser() {
-      axios
+      this.$auth.Intance()
         .get(
           `${BASE_URL}Users?search=${this.stringKeyWord}&page=${this.userPage}&record=${this.PAGE_SIZE}`,
         )

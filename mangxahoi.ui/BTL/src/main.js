@@ -9,6 +9,9 @@ import router from './router'
 //Vue-x
 import store from './stores/index'
 
+// register plugin global
+import './globalPlugin';
+
 Vue.use(VueRouter)
 Vue.use(Antd)
 

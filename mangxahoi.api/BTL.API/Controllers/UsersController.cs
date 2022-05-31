@@ -11,25 +11,77 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authorization;
+using BTL.API.Auth;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SocialNetwork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly Social_NetworkContext _db;
         public static IWebHostEnvironment _environment;
+        protected readonly IJwtAuthencationManager _jwtAuthencationManager;
 
-
-        public UsersController(Social_NetworkContext context, IWebHostEnvironment environment)
+        public UsersController(IJwtAuthencationManager jwtAuthencationManager,Social_NetworkContext context, IWebHostEnvironment environment)
         {
             _db = context;
             _environment = environment;
+            _jwtAuthencationManager = jwtAuthencationManager;
         }
+
+        
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<ServiceResponse> Authencation([FromBody] UserTb user)
+        {
+            ServiceResponse res = new ServiceResponse();
+            try
+            {
+                
+                var users = _db.UserTbs.ToList();
+                if (users == null || users.Count <= 0)
+                {
+                    res.Success = false;
+                    res.Data = null;
+                    return res;
+                }
+
+                if (!users.Any(x => x.UserName == user.UserName && x.Password == user.Password))
+                {
+                    res.Success = false;
+                    res.Data = null;
+                    return res;
+                }
+
+                var token = await _jwtAuthencationManager.Autheticate(user);
+                Dictionary<string, object> result = new Dictionary<string, object>();
+                if (string.IsNullOrEmpty(token))
+                {
+                    res.Message = "Authorize";
+                    res.ErrorCode = 401;
+                    res.Success = false;
+                    return res;
+                }
+                res.Data = token;
+                result.Add("token", token);
+                res.Data = result;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                res.Success = false;
+                res.Message = $"{ex.Message}";
+                res.Data = null;
+                return res;
+            }
+        }
+
         [HttpPost("login")]
-        public async Task<ServiceResponse> Login([FromForm] UserTb user)
+        public async Task<ServiceResponse> Login([FromBody] UserTb user)
         {
             ServiceResponse res = new ServiceResponse();
             try
@@ -81,6 +133,8 @@ namespace SocialNetwork.Controllers
 
             return res;
         }
+
+
         [HttpGet]
         public async Task<ActionResult<PagingData>> GetUserByPage([FromQuery] string search, [FromQuery] int? page = 1, [FromQuery] int? record = 20)
         {
@@ -122,6 +176,7 @@ namespace SocialNetwork.Controllers
             return res;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ServiceResponse> UserPost([FromForm] UserTb user)
         {
@@ -156,6 +211,7 @@ namespace SocialNetwork.Controllers
             res.Data = user;
             return res;
         }
+
 
         [HttpPut("edit")]
         public async Task<ServiceResponse> EditUser(UserTb user)

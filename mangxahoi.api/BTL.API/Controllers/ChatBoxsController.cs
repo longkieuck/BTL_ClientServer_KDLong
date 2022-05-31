@@ -1,4 +1,5 @@
 ﻿using BTL.API.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Common;
@@ -13,6 +14,7 @@ namespace SocialNetwork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ChatBoxsController : ControllerBase
     {
         private readonly Social_NetworkContext _db;

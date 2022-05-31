@@ -95,7 +95,7 @@
 <script>
 import { BASE_URL } from "../configs/index";
 import { mapState, mapActions } from "vuex";
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   props:{
@@ -115,12 +115,16 @@ export default {
       }),
   },
   created(){
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
     // this.showOldComment();
   },
   data() {
     return {
       showDialog: false,
       isShowOldComment: true,
+      instance : null
     };
   },
   methods:{...mapActions("user", []),
@@ -141,7 +145,7 @@ export default {
     },
     likePost() {
       let me = this;
-      axios
+      this.$auth.Intance()
         .post(`${BASE_URL}posts/like_post`, {
           PostId: me.post.Id,
           UserId: me.user.Id,
@@ -161,7 +165,7 @@ export default {
     },
     showOldComment() {
       let me = this;
-      axios
+      this.$auth.Intance()
         .get(`${BASE_URL}posts/post_comment?Id=${me.post.Id}&page=1&record=50`)
         .then((res) => {
           if (!me.post.lstCmt) {
@@ -183,7 +187,7 @@ export default {
     postComment() {
       let me = this;
       if (me.post.Comment) {
-        axios
+        this.$auth.Intance()
           .post(`${BASE_URL}posts/add_comment`, {
             Content: me.post.Comment,
             PostId: me.post.Id,

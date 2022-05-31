@@ -59,7 +59,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import {BASE_URL} from '../configs/index'
     import {mapActions} from "vuex"
     export default {
@@ -68,6 +67,11 @@
             return{
                 username:'',
                 email:'',
+            }
+        },
+        created(){
+            if(!this.$auth.Intance()){
+                this.$router.push({ path: "/login" })
             }
         },
         methods:{
@@ -79,7 +83,7 @@
             ]
             ),
             findAccount(){
-                axios.get(`${BASE_URL}Users/verify_email?userName=${this.username}&email=${this.email}`)
+                this.$auth.Intance().get(`${BASE_URL}Users/verify_email?userName=${this.username}&email=${this.email}`)
                 .then(res =>{
                     if(res.data.Success == false){
                         this.showNotification("Sai Tài khoản hoặc email vui lòng nhập lại!","error")

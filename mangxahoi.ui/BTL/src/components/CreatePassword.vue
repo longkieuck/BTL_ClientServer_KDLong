@@ -76,7 +76,6 @@
 
 <script>
     import {BASE_URL} from '../configs/index'
-    import axios from 'axios'
     import {mapState,mapActions} from 'vuex'
     export default {
         name:'CreatePassword',
@@ -107,7 +106,7 @@
                 else if(this.pass1 != this.pass2){
                     this.showNotification("Mật khẩu chưa khớp!","error")
                 }else{
-                    axios.post(`${BASE_URL}Users/change_password`, {
+                    this.$auth.Intance().post(`${BASE_URL}Users/change_password`, {
                         id: this.user.Id,
                         password: this.user.Password,
                         newPassword: this.pass1

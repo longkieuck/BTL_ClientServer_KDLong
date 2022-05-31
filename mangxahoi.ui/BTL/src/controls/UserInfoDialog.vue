@@ -93,7 +93,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import axios from "axios";
+// import axios from "axios";
 import { BASE_URL } from "../configs/index";
 export default {
     props:{
@@ -107,6 +107,9 @@ export default {
       }
     },
     created(){
+      if(!this.$auth.Intance()){
+        this.$router.push({ path: "/login" })
+      }
       if(this.userEdit != null && this.formMode == 'Edit'){
         this.userInfo = {...this.userEdit}
         this.url = this.bindingUrlImage(this.userEdit.Id)
@@ -129,7 +132,7 @@ export default {
               PhoneNumber: "",
               Position: "",
               Department: ""
-            }
+            },
         }
     },
     methods:{
@@ -166,8 +169,7 @@ export default {
             }
             formData.append(prop,  this.userInfo[prop]);
           }
-          axios
-            .post(`${BASE_URL}Users`, formData,
+          this.$auth.Intance().post(`${BASE_URL}Users`, formData,
               {headers: {
                     "Content-Type": "multipart/form-data",
                   },})
@@ -187,7 +189,7 @@ export default {
               this.showNotification("Có lỗi sảy ra!", "error");
             });
           }else{
-            axios
+            this.$auth.Intance()
             .put(`${BASE_URL}Users/edit`, this.userInfo)
             .then((res) => {
               if(res && res.data.Success){

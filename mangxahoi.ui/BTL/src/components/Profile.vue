@@ -147,7 +147,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import axios from "axios";
+// import axios from "axios";
 import { BASE_URL,PAGE_SIZE_CONST } from "../configs/index";
 import moment from "moment";
 import Header from '../controls/Header.vue'
@@ -166,7 +166,7 @@ export default {
       listPost: [],
       listViewMore: {},
       userProfile:{},
-      current_user: {}
+      current_user: {},
     };
   },
   computed: {
@@ -175,6 +175,9 @@ export default {
     }),
   },
   created() {
+    if(!this.$auth.Intance()){
+      this.$router.push({ path: "/login" })
+    }
     //Lấy dữ liệu current user
     let userData = localStorage.getItem('currentUser');
     if(userData || this.user.Id){
@@ -185,7 +188,7 @@ export default {
       if (this.$route.params.id == this.user.Id) {
         this.userProfile = this.user
       } else {
-        axios
+        this.$auth.Intance()
           .get(
             `${BASE_URL}Users/detail?id=${this.$route.params.id}`
           )
@@ -209,7 +212,7 @@ export default {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     },
     loadListPost() {
-      axios
+      this.$auth.Intance()
         .get(
           `${BASE_URL}Posts/post_by_id?user_id_current=${this.current_user.Id}&user_id_search=${this.$route.params.id}&page=${this.postPage}&record=${this.PAGE_SIZE}`,
         )
@@ -230,8 +233,8 @@ export default {
       }
     },
     bindingUrlImage(fileName){
-                return `${BASE_URL}posts/${fileName}`;
-            },
+      return `${BASE_URL}posts/${fileName}`;
+    },
 
     goToNewFeed() {
       this.$router.push({ path: "/newfeed" });
