@@ -214,7 +214,7 @@
               <div @click="share()" class="share-button">Chia sẻ</div>
             </div>
             </div>
-            <PostBox v-for="(post, index) in listPost" :key="index" :post="post" @removePost="handleRemovePost"/>
+            <PostBox v-for="(post, index) in listPost" :key="index" :post="post" @removePost="handleRemovePost" />
         </div>
          
       </div>

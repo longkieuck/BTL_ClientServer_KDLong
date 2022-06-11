@@ -276,6 +276,22 @@ namespace SocialNetwork.Controllers
             return res;
         }
 
+        [HttpPost("edit_comment")]
+        public async Task<ServiceResponse> EditCommentAsync([FromBody] Comment comment)
+        {
+            ServiceResponse res = new ServiceResponse();
+            comment.Id = Guid.NewGuid();
+            var commentDb = await _db.Comments.FindAsync(comment.Id);
+            commentDb.ModifiedDate = DateTime.Now;
+            commentDb.CreateDate = comment.CreateDate;
+            commentDb.Content = comment.Content;
+            _db.Comments.Update(comment);
+            await _db.SaveChangesAsync();
+            res.Success = true;
+            res.Data = comment;
+            return res;
+        }
+
         [HttpPost("like_post")]
         public async Task<ServiceResponse> LikePost(UserLike userLike)
         {

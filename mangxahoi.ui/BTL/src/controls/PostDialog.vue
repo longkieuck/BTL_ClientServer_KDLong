@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="cover-post-dialog"></div>
-    <div class="post-dialog">
-      <div class="left-dialog">
+    <div class="post-dialog flex">
+      <div class="left-dialog flex-7" v-if="urlImg">
         <img :src="bindingUrlImage(urlImg)"/>
       </div>
-      <div class="right-dialog">
+      <div class="right-dialog flex-3">
         <div class="header-post">
           <div class="user-post">
             <div class="avatar">
@@ -228,7 +228,6 @@ export default {
     display: flex;
 }
 .left-dialog{
-  width: 70%;
   height: 100%;
 }
 .left-dialog img{
@@ -238,7 +237,6 @@ export default {
   margin: auto;
 }
 .right-dialog{
-  width: 30%;
   height: 100%;
   padding-right: 20px;
 }

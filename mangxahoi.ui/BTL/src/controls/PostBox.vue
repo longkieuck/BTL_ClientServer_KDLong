@@ -26,11 +26,25 @@
       </div>
     </div>
     <div class="content-post">
-      <div class="post-text-box">
+      <div class="post-text-box" @click="showDialogDetail()" v-if="!postEdit.IsEdit">
         {{ post.Content }}
       </div>
+      <div class="post-info-edit flex align-center" v-if="postEdit.IsEdit">
+        <div class="flex flex-1 pd-20">
+           <textarea
+              ref="editPost"
+              class="w-100 textarea-edit-post"
+              type="text"
+              v-model="postEdit.Content"
+            />
+        </div>
+        <div class="btns flex align-center flex-1">
+          <div class="btn btn-edit" @click="saveEdit">Chỉnh sửa xong</div>
+          <div class="btn btn-cancel" @click="cancelEdit">Hủy bỏ</div>
+        </div>
+      </div>
       <!-- <div v-if="post.isAvatar == 1" class="post-image-box"> -->
-      <div class="post-image" :style="imageByPost(post.Id)">
+      <div @click="showDialogDetail()" class="post-image" :style="imageByPost(post.Id)">
         <img
           v-for="(img, index) in post.post_image"
           :key="index"
@@ -81,16 +95,27 @@
         </div>
         <div class="content-comment">
           <div class="cover-username-text-comment">
-            <div class="username-comment" @click="goToProfie(cmt.UserId)">
+            <div class="username-comment" @click="goToPrxeofie(cmt.UserId)">
               {{ cmt.UserName }}
             </div>
             <div class="text-comment">
               {{ cmt.Content }}
             </div>
+            
           </div>
-          <div class="like-time-comment">
-            <div class="time-cmt-text">
-              {{ cmt.CreateDateString }}
+          <div class="flex cusor-pointer">
+            <div class="like-time-comment" v-if="cmt.UserId == user.Id">
+              <div class="time-cmt-text" @click="editComment(i)">
+                Sửa
+              </div>
+              <div class="time-cmt-text">
+                Xóa
+              </div>
+            </div>
+            <div class="like-time-comment">
+              <div class="time-cmt-text">
+                {{ cmt.CreateDateString }}
+              </div>
             </div>
           </div>
         </div>
@@ -142,7 +167,11 @@ export default {
       showDialog: false,
       url_img: '',
       isShowOldComment: true,
-      instance : null
+      instance : null,
+      commentEdit : {},
+      postEdit : {
+        IsEdit : false,
+      }
     };
   },
   computed: {
@@ -202,6 +231,31 @@ export default {
           });
       }
     },
+
+    editCommentAsync() {
+      let me = this;
+      if (me.post.Comment) {
+        this.$auth.Intance()
+          .post(`${BASE_URL}posts/edit_comment`, {
+            Content: me.post.Comment,
+            PostId: me.post.Id,
+            UserName: me.user.FullName,
+            UserId: me.user.Id,
+          })
+          .then((res) => {
+            if (res.data.Success) {
+              if (!Array.isArray(me.post.lstCmt)) {
+                me.post.lstCmt = [];
+              }
+              me.post.lstCmt.push(res.data.Data);
+              me.post.Comment = "";
+              me.post.CommentCount++;
+              me.webSocket.emit("notify", me.post.UserId);
+            }
+          });
+      }
+    },
+
     imageByPost() {
       let requireURL = "anhdd.jpg";
       return {
@@ -217,16 +271,37 @@ export default {
       }
     },
     postOptionClick(option) {
+      const me = this;
       switch (option) {
         case "Edit":
+          me.postEdit.Content = me.post.Content;
+          me.postEdit.IsEdit = true;
+          setTimeout(()=>{
+            me.focusTextEditPost();
+          },300);
           break;
         case "Delete":
-          this.deletePost();
+          me.deletePost();
           break;
         default:
           break;
       }
     },
+    editPost() {
+      const me = this;
+      me.postEdit = {...me.post,Content : me.postEdit.Content};
+      if (me.postEdit.Id) {
+        me.post.Content = me.postEdit.Content;
+        me.$auth.Intance()
+          .put(`${BASE_URL}posts/edit`,me.postEdit)
+          .then((res) => {
+            if (res.data.Success) {
+              me.showNotification("Sửa thành công", "success");
+            }
+          });
+      }
+    },
+
     deletePost() {
       if (this.post.Id) {
         this.$auth.Intance()
@@ -268,8 +343,35 @@ export default {
     showDialogDetail(url){
         let me = this;
         me.showDialog = true;
-        me.url_img = url;
-    }
+        if(url){
+          me.url_img = url;
+        }
+    },
+    editComment(index){
+      const me = this;
+      if(me.post && me.post.lstCmt && index >= 0){
+        me.commentEdit.IsEdit = {...me.post.lstCmt.map(() => false)};
+        let comment = me.post.lstCmt[index];
+        if(comment){
+           me.commentEdit.IsEdit[index] = true;
+        }
+      }
+    },
+    focusTextEditPost(){
+      const me = this;
+      if(me.$refs && me.$refs.editPost){
+        me.$refs.editPost.focus()
+      }
+    },
+    saveEdit(){
+      const me = this;
+      me.editPost();
+      me.postEdit.IsEdit = false;
+    },
+    cancelEdit(){
+      const me = this;
+      me.postEdit.IsEdit = false;
+    },
   },
 };
 </script>
@@ -576,5 +678,35 @@ export default {
 .user-name-post:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.textarea-edit-post{
+  min-height: 80px;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #babec5;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.btns .btn{
+  height:36px;
+  padding:10px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.btns .btn-edit{
+  background-color:#1B74E4;
+  color: #ffffff;
+  width: 130px;
+}
+
+.btns .btn-cancel{
+  background-color:#E4E6EB;
+  color: #212121;
+  width: 80px;
+  margin-left: 10px;
 }
 </style>

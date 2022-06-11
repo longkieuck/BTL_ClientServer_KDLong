@@ -2,20 +2,22 @@
   <div class="cover-login">
     <!-- header -->
     <div class="header"></div>
-
+    
     <!-- body -->
     <div class="body">
       <div class="container">
         <div class="container-title">
           <div class="title-name">
             <div class="name">
-              <h1 style="font-size: 55px; color: #2181e7">Fakebook</h1>
+
+              <h1 style="font-size: 55px; color: #04a59d">MTA Social Network</h1>
             </div>
             <div class="imformation-name">
-              <h1 class="name-details">
-                Fakebook giúp bạn kết nối và chia sẻ với mọi người trong công ty
-                của bạn.
-              </h1>
+              <div class="flex">
+                <h1 class="name-details">
+                  MTA Social Network giúp cán bộ kết nối và chia sẻ với mọi người trong học viện
+                </h1>
+              </div>
             </div>
           </div>
         </div>
@@ -70,7 +72,7 @@
     </div>
     <!-- footer -->
     <div class="footer">
-      <h3 class="footer-name">Bản quyền thuộc về @Fakebook</h3>
+      <h3 class="footer-name">Bản quyền thuộc về @MTA</h3>
     </div>
      <!-- modal -->
   </div>
@@ -111,8 +113,8 @@ export default {
           }else{
             this.$router.push({ path: "/newfeed" });
           }
-        } else if(res) {
-          this.showNotification(res.data.Message, "error");
+        } else {
+          this.showNotification(res.Message, "error");
           this.UserName = "";
           this.Password = "";
         }

@@ -9,6 +9,7 @@
 .cover-login .header {
     height: 100px;
     width: 100%;
+    background-color: #04a59d !important;
 }
 
 .cover-login .container {
@@ -81,7 +82,7 @@
     width: 90%;
     height: 80%;
     margin: auto;
-    background-color: #2181e7;
+    background-color: #04a59d;
     border-radius: 5px;
     border: 1px none;
     display: flex;

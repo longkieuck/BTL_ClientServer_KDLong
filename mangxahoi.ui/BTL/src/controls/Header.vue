@@ -8,12 +8,15 @@
       </div>
       <search-box/>
       <div class="cover-right-header">
-        <div class="avatar">
-          <img :src="bindingUrlImage(user.Id + '_.jpg')"/>
+        <div class="flex align-center cusor-pointer" @click="goToProfie(user.Id)">
+           <div class="avatar">
+            <img :src="bindingUrlImage(user.Id + '_.jpg')"/>
+          </div>
+          <div class="full-name mgl-10">
+            {{ user.FullName }}
+          </div>
         </div>
-        <div class="full-name">
-          {{ user.FullName }}
-        </div>
+
         <div class="mess-icon" @click="handleMessBox()">
           <div v-if="messCount > 0" class="count-mess-noti">
             {{messCount}}
@@ -71,6 +74,9 @@ export default {
     },
     methods:{
         ...mapActions("user", ["setUser", "setDefaultForState","loadNotify","loadMessNotify","hideChatBox" ]),
+        goToProfie(id) {
+          this.$router.push({ name: "profile", params: { id: id } });
+        },
         handleNotifyBox(){
           this.showNotifyBox = !this.showNotifyBox
           this.showMessBox = false

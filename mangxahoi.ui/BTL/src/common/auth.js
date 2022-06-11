@@ -4,7 +4,6 @@ const keyJwt = "Jwt";
 const keyUser = "currentUser";
 const resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
 class Auth {
-
     Intance(){
         if(!resToken){
             return null;
@@ -98,10 +97,32 @@ class Auth {
                     this.setToken(resToken);
                     dataRes = res.data;
                     this.setUser(dataRes.data);
-
+                    resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
                 })
-                .catch(err => Promise.reject(err)
-                );
+                .catch(err => {
+                    Promise.reject(err)
+                });
+        }
+        if(!dataRes){
+            resToken = await this.getTokenUser(params);
+            if (resToken) {
+                let config = {
+                    headers: {
+                        'Authorization': `Bearer ${resToken}`
+                    }
+                }
+                url = `${BASE_URL}Users/login`;
+                await axios.post(url, params, config)
+                    .then(res => {
+                        this.setToken(resToken);
+                        dataRes = res.data;
+                        this.setUser(dataRes.data);
+                        resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
+                    })
+                    .catch(err => {
+                        Promise.reject(err)
+                    });
+            }
         }
         return dataRes;
     }
