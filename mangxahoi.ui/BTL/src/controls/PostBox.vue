@@ -137,6 +137,7 @@
       </div>
     </div>
     <PostDialog :post="post" :urlImg="url_img" v-if="showDialog" @hideDialog="hideDialog"/>
+    <Mesgesabox :title="infoConfirmDelete.Title" :message="infoConfirmDelete.Message" @btnClick="btnClickForm" :formType="infoConfirmDelete.Type" v-if="infoConfirmDelete && infoConfirmDelete.IsShow"/>
   </div>
 </template>
 
@@ -145,9 +146,11 @@ import { BASE_URL } from "../configs/index";
 // import axios from "axios";
 import { mapState, mapActions } from "vuex";
 import PostDialog from "../controls/PostDialog.vue";
+import Mesgesabox from "../components/Mesgesabox.vue";
 export default {
   components: {
     PostDialog,
+    Mesgesabox
   },
   props: {
     post: {
@@ -171,7 +174,9 @@ export default {
       commentEdit : {},
       postEdit : {
         IsEdit : false,
-      }
+      },
+      infoConfirmDelete : {}
+
     };
   },
   computed: {
@@ -281,7 +286,14 @@ export default {
           },300);
           break;
         case "Delete":
-          me.deletePost();
+          // Show form xác nhận
+          me.infoConfirmDelete = {
+            IsShow : true,
+            Title : "Xóa bài viết",
+            Message : "Bạn có muốn xóa bài viết không?",
+            Type : me.$enum.MessageBoxType().Confirm
+          }
+          // me.deletePost();
           break;
         default:
           break;
@@ -372,6 +384,23 @@ export default {
       const me = this;
       me.postEdit.IsEdit = false;
     },
+    btnClickForm(type){
+      const me = this;
+      let actionType = me.$enum.ActionType();
+      if(actionType){
+        switch(type){
+          case actionType.Delete:
+            me.deletePost();
+            break;
+          case actionType.Cancel:
+            me.infoConfirmDelete.IsShow = false;
+            break;
+          case actionType.Close:
+            me.infoConfirmDelete.IsShow = false;
+            break;
+        }
+      }
+    }
   },
 };
 </script>
