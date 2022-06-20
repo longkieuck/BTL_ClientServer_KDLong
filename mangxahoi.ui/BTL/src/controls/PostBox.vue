@@ -20,8 +20,8 @@
       <div class="edit-post" v-if="post.UserId == user.Id">
         <div class="div" @click="showEdit = true">...</div>
         <div class="edit-option" v-show="showEdit">
-          <div class="div" @click="postOptionClick('Edit')">Sửa</div>
-          <div class="div" @click="postOptionClick('Delete')">Xóa</div>
+          <div class="div" @click="postOptionClick('Edit')">Sửa bài viết</div>
+          <div class="div" @click="postOptionClick('Delete')">Xóa bài viết</div>
         </div>
       </div>
     </div>
@@ -29,8 +29,8 @@
       <div class="post-text-box" @click="showDialogDetail()" v-if="!postEdit.IsEdit">
         {{ post.Content }}
       </div>
-      <div class="post-info-edit flex align-center" v-if="postEdit.IsEdit">
-        <div class="flex flex-1 pd-20">
+      <div class="post-info-edit align-center" v-if="postEdit.IsEdit">
+        <div class="flex flex-1 pd-10">
            <textarea
               ref="editPost"
               class="w-100 textarea-edit-post"
@@ -38,8 +38,8 @@
               v-model="postEdit.Content"
             />
         </div>
-        <div class="btns flex align-center flex-1">
-          <div class="btn btn-edit" @click="saveEdit">Chỉnh sửa xong</div>
+        <div class="btns flex align-center pd-10">
+          <div class="btn btn-edit" @click="saveEdit">Chỉnh sửa</div>
           <div class="btn btn-cancel" @click="cancelEdit">Hủy bỏ</div>
         </div>
       </div>
@@ -139,7 +139,6 @@
     <PostDialog :post="post" :urlImg="url_img" v-if="showDialog" @hideDialog="hideDialog"/>
   </div>
 </template>
-
 <script>
 import { BASE_URL } from "../configs/index";
 // import axios from "axios";
@@ -397,7 +396,7 @@ export default {
   position: relative;
 }
 .edit-option {
-  width: 50px;
+  width: 100px;
   height: 50px;
   border: 1px;
   border-radius: 10px;
@@ -409,6 +408,7 @@ export default {
 .edit-option .div {
   padding: 2px 12px;
   color: #fff;
+  text-align: center;
 }
 .user-post {
   display: flex;
@@ -700,7 +700,7 @@ export default {
 .btns .btn-edit{
   background-color:#1B74E4;
   color: #ffffff;
-  width: 130px;
+  width: 92px;
 }
 
 .btns .btn-cancel{
@@ -708,5 +708,11 @@ export default {
   color: #212121;
   width: 80px;
   margin-left: 10px;
+}
+.pd-10{
+  padding:10px
+}
+.pd-20{
+  padding:20px
 }
 </style>
