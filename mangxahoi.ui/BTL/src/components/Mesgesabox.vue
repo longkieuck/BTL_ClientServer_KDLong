@@ -86,7 +86,7 @@
     z-index: 2;
     width: 500px;
     min-height: 150px;
-    left: calc(50% - 150px);
+    left: calc(50% - 230px);
     top: calc(50% - 150px);
     background-repeat: no-repeat;
     background-size: contain;
