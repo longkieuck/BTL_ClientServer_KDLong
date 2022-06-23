@@ -15,7 +15,7 @@ namespace BTL.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class GroupPostsController : ControllerBase
     {
         private readonly Social_NetworkContext _db;

@@ -14,7 +14,7 @@ namespace SocialNetwork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ChatBoxsController : ControllerBase
     {
         private readonly Social_NetworkContext _db;
