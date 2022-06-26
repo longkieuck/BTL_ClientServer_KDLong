@@ -19,7 +19,7 @@ namespace SocialNetwork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly Social_NetworkContext _db;
