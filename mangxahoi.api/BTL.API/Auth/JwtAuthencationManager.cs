@@ -42,8 +42,8 @@ namespace BTL.API.Auth
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                    new Claim(ClaimTypes.Name,user.UserName),
-                    new Claim(ClaimTypes.Role, $"{RoleType.User}"),
+                        new Claim(ClaimTypes.Name,user.UserName),
+                        new Claim(ClaimTypes.Role, $"{RoleType.User}"),
                     }),
                     Expires = DateTime.UtcNow.AddHours(double.Parse(_configuration["Jwt:ExpireDate"])),
                     SigningCredentials = new SigningCredentials(

@@ -84,8 +84,11 @@
     </div>
     <div class="more-comment">
       <!-- tổng số like và cmt -->
-      <div class="more-comment-text" @click="showOldComment()" v-if="isShowOldComment && post.CommentCount > 0">
-        Xem bình luận
+      <div class="more-comment-text" @click="showOldComment()" v-if="isShowOldComment">
+        Xem thêm bình luận
+      </div>
+      <div class="more-comment-text" @click="hidenComment()" v-if="!isShowOldComment">
+        Ẩn bình luận
       </div>
     </div>
     <div class="comment-box">
@@ -399,6 +402,11 @@ export default {
             break;
         }
       }
+    },
+     hidenComment(){
+      const me = this;
+      me.isShowOldComment = true;
+      me.post.lstCmt = [];
     }
   },
 };
