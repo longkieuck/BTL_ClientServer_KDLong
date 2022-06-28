@@ -108,12 +108,6 @@
           </div>
           <div class="flex cusor-pointer">
             <div class="like-time-comment" v-if="cmt.UserId == user.Id">
-              <div class="time-cmt-text" @click="editComment(i)">
-                Sửa
-              </div>
-              <div class="time-cmt-text">
-                Xóa
-              </div>
             </div>
             <div class="like-time-comment">
               <div class="time-cmt-text">
