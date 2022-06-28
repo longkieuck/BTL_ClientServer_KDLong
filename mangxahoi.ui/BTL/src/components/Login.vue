@@ -10,7 +10,7 @@
           <div class="title-name">
             <div class="name">
 
-              <h1 style="font-size: 55px; color: #04a59d">MTA Social Network</h1>
+              <h1 style="font-size: 55px;color: #2181e7">MTA Social Network</h1>
             </div>
             <div class="imformation-name">
               <div class="flex">

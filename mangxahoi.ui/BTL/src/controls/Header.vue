@@ -3,7 +3,7 @@
       <div class="cover-logo">
         <div class="logo" @click="goToNewFeed()"></div>
         <div class="app-name">
-          MTA
+          FAKEBOOK
         </div>
       </div>
       <search-box/>
