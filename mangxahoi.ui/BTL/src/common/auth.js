@@ -80,49 +80,29 @@ class Auth {
 
     async loginUser(params) {
         let url = `${BASE_URL}Users/login`;
-        let resToken = this.getTokenStorage();
         let dataRes = null;
-        if (!resToken) {
-            resToken = await this.getTokenUser(params);
-        }
-        if (resToken) {
-            let config = {
-                headers: {
-                    'Authorization': `Bearer ${resToken}`
-                }
-            }
-            url = `${BASE_URL}Users/login`;
-            await axios.post(url, params, config)
-                .then(res => {
-                    this.setToken(resToken);
-                    dataRes = res.data;
-                    this.setUser(dataRes.data);
-                    resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
-                })
-                .catch(err => {
-                    Promise.reject(err)
-                });
-        }
+        url = `${BASE_URL}Users/login`;
+        await axios.post(url, params)
+            .then(res => {
+                this.setToken(resToken);
+                dataRes = res.data;
+                this.setUser(dataRes.data);
+            })
+            .catch(err => {
+                Promise.reject(err)
+            });
+        
         if(!dataRes){
-            resToken = await this.getTokenUser(params);
-            if (resToken) {
-                let config = {
-                    headers: {
-                        'Authorization': `Bearer ${resToken}`
-                    }
-                }
-                url = `${BASE_URL}Users/login`;
-                await axios.post(url, params, config)
-                    .then(res => {
-                        this.setToken(resToken);
-                        dataRes = res.data;
-                        this.setUser(dataRes.data);
-                        resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
-                    })
-                    .catch(err => {
-                        Promise.reject(err)
-                    });
-            }
+            url = `${BASE_URL}Users/login`;
+            await axios.post(url, params)
+            .then(res => {
+                this.setToken(resToken);
+                dataRes = res.data;
+                this.setUser(dataRes.data);
+            })
+            .catch(err => {
+                Promise.reject(err)
+            });
         }
         return dataRes;
     }

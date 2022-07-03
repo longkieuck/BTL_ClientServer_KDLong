@@ -34,51 +34,51 @@ namespace SocialNetwork.Controllers
         }
 
         
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public async Task<ServiceResponse> Authencation([FromBody] UserTb user)
-        {
-            ServiceResponse res = new ServiceResponse();
-            try
-            {
+        //[AllowAnonymous]
+        //[HttpPost("authenticate")]
+        //public async Task<ServiceResponse> Authencation([FromBody] UserTb user)
+        //{
+        //    ServiceResponse res = new ServiceResponse();
+        //    try
+        //    {
                 
-                var users = _db.UserTbs.ToList();
-                if (users == null || users.Count <= 0)
-                {
-                    res.Success = false;
-                    res.Data = null;
-                    return res;
-                }
+        //        var users = _db.UserTbs.ToList();
+        //        if (users == null || users.Count <= 0)
+        //        {
+        //            res.Success = false;
+        //            res.Data = null;
+        //            return res;
+        //        }
 
-                if (!users.Any(x => x.UserName == user.UserName && x.Password == user.Password))
-                {
-                    res.Success = false;
-                    res.Data = null;
-                    return res;
-                }
+        //        if (!users.Any(x => x.UserName == user.UserName && x.Password == user.Password))
+        //        {
+        //            res.Success = false;
+        //            res.Data = null;
+        //            return res;
+        //        }
 
-                var token = await _jwtAuthencationManager.Autheticate(user);
-                Dictionary<string, object> result = new Dictionary<string, object>();
-                if (string.IsNullOrEmpty(token))
-                {
-                    res.Message = "Authorize";
-                    res.ErrorCode = 401;
-                    res.Success = false;
-                    return res;
-                }
-                res.Data = token;
-                result.Add("token", token);
-                res.Data = result;
-                return res;
-            }
-            catch (Exception ex)
-            {
-                res.Success = false;
-                res.Message = $"{ex.Message}";
-                res.Data = null;
-                return res;
-            }
-        }
+        //        var token = await _jwtAuthencationManager.Autheticate(user);
+        //        Dictionary<string, object> result = new Dictionary<string, object>();
+        //        if (string.IsNullOrEmpty(token))
+        //        {
+        //            res.Message = "Authorize";
+        //            res.ErrorCode = 401;
+        //            res.Success = false;
+        //            return res;
+        //        }
+        //        res.Data = token;
+        //        result.Add("token", token);
+        //        res.Data = result;
+        //        return res;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        res.Success = false;
+        //        res.Message = $"{ex.Message}";
+        //        res.Data = null;
+        //        return res;
+        //    }
+        //}
 
         [HttpPost("login")]
         public async Task<ServiceResponse> Login([FromBody] UserTb user)
