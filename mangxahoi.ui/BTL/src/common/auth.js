@@ -2,16 +2,10 @@ import {  BASE_URL } from '@/configs/index'
 import axios from 'axios';
 const keyJwt = "Jwt";
 const keyUser = "currentUser";
-const resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
+// const resToken = localStorage.getItem(keyJwt) ? JSON.parse(localStorage.getItem(keyJwt)) : localStorage.getItem(keyJwt);
 class Auth {
     Intance(){
-        if(!resToken){
-            return null;
-        }
         return axios.create({
-            headers: {
-                'Authorization': `Bearer ${resToken}`
-            }
         });
     }
     setUser(user) {
@@ -84,7 +78,7 @@ class Auth {
         url = `${BASE_URL}Users/login`;
         await axios.post(url, params)
             .then(res => {
-                this.setToken(resToken);
+                // this.setToken(resToken);
                 dataRes = res.data;
                 this.setUser(dataRes.data);
             })
@@ -96,7 +90,7 @@ class Auth {
             url = `${BASE_URL}Users/login`;
             await axios.post(url, params)
             .then(res => {
-                this.setToken(resToken);
+                // this.setToken(resToken);
                 dataRes = res.data;
                 this.setUser(dataRes.data);
             })
