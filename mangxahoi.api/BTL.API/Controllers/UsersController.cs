@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Authorization;
-using BTL.API.Auth;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SocialNetwork.Controllers
@@ -24,13 +23,11 @@ namespace SocialNetwork.Controllers
     {
         private readonly Social_NetworkContext _db;
         public static IWebHostEnvironment _environment;
-        protected readonly IJwtAuthencationManager _jwtAuthencationManager;
 
-        public UsersController(IJwtAuthencationManager jwtAuthencationManager,Social_NetworkContext context, IWebHostEnvironment environment)
+        public UsersController(Social_NetworkContext context, IWebHostEnvironment environment)
         {
             _db = context;
             _environment = environment;
-            _jwtAuthencationManager = jwtAuthencationManager;
         }
 
         

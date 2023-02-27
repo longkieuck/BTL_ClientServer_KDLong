@@ -1,4 +1,3 @@
-using BTL.API.Auth;
 using BTL.API.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -57,7 +56,6 @@ namespace BTL.API
 
             services.AddDbContext<Social_NetworkContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
-            services.AddSingleton<IJwtAuthencationManager>(new JwtAuthencationManager(Configuration["Jwt:Key"], Configuration));
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
