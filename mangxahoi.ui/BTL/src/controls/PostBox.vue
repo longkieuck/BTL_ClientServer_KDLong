@@ -85,7 +85,7 @@
     <div class="more-comment">
       <!-- tổng số like và cmt -->
       <div class="more-comment-text" @click="showOldComment()" v-if="isShowOldComment">
-        Xem thêm bình luận
+        Xem bình luận
       </div>
       <div class="more-comment-text" @click="hidenComment()" v-if="!isShowOldComment">
         Ẩn bình luận

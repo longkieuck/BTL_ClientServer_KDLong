@@ -50,6 +50,7 @@
                 const me = this;
                 let type = status == 'yes' ? me.$enum.ActionType().Delete : (status == 'no' ? me.$enum.ActionType().Cancel : me.$enum.ActionType().None);
                 me.actionForm(type);
+                me.closeForm()
             },
             /**
                 Hàm xử lý close form Messagebox
