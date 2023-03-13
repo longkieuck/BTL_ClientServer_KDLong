@@ -154,8 +154,8 @@ export default {
       this.setStringKeyWord("");
       this.afterSearch();
     },
-    goToNewFeed() {
-      this.$router.push({ path: "/newfeed" });
+    goToNewsFeed() {
+      this.$router.push({ path: "/newsfeed" });
     },
     goToProfie(id) {
       this.$router.push({ name: "profile", params: { id: id } });

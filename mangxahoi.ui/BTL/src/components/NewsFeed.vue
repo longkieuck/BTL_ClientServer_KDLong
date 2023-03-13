@@ -380,7 +380,7 @@ import UserInfoBox from '../controls/UserInfoBox.vue';
 import PostBox from '../controls/PostBox.vue';
 import PostDialog from "../controls/PostDialog.vue";
 export default {
-  name: "NewFeed",
+  name: "NewsFeed",
   components:{
     Header,
     ChatBox,

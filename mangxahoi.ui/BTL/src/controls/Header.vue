@@ -1,7 +1,7 @@
 <template>
     <div class="header">
       <div class="cover-logo">
-        <div class="logo" @click="goToNewFeed()"></div>
+        <div class="logo" @click="goToNewsFeed()"></div>
         <div class="app-name">
           FAKEBOOK
         </div>
@@ -85,8 +85,8 @@ export default {
           this.showMessBox = !this.showMessBox
           this.showNotifyBox = false
         },
-        goToNewFeed() {
-            this.$router.push({ path: "/newfeed" });
+        goToNewsFeed() {
+            this.$router.push({ path: "/newsfeed" });
         },
         logout(){
           let me = this;

@@ -1,5 +1,5 @@
 import Login from '../src/components/Login.vue';
-import NewFeed from '../src/components/NewFeed.vue'
+import NewsFeed from '../src/components/NewsFeed.vue'
 import ForgotPassword from '../src/components/ForgotPassword.vue';
 import Profile from '../src/components/Profile.vue';
 import Verify from '../src/components/Verify.vue';
@@ -14,7 +14,7 @@ const routes = [{
     },
     { path: '/login', component: Login },
     { path: '/forgotpassword', component: ForgotPassword },
-    { path: '/newfeed', component: NewFeed },
+    { path: '/newsfeed', component: NewsFeed },
     { name: 'profile', path: '/profile/:id?', component: Profile },
     { path: '/verify', component: Verify },
     { path: '/changepassword', component: ChangePassword },

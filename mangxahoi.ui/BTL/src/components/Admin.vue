@@ -144,7 +144,7 @@ export default {
     if(this.user.UserName == 'admin')
       this.getUserByCodition()
     else{
-      this.$router.replace({ path: "/newfeed" });
+      this.$router.replace({ path: "/newsfeed" });
     }
   },
   data() {

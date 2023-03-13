@@ -199,7 +199,7 @@ export default {
 
       this.loadListPost();
     }else{
-      this.$router.replace({ path: "/newfeed" });
+      this.$router.replace({ path: "/newsfeed" });
     }
     //load tong so post
 
@@ -236,8 +236,8 @@ export default {
       return `${BASE_URL}posts/${fileName}`;
     },
 
-    goToNewFeed() {
-      this.$router.push({ path: "/newfeed" });
+    goToNewsFeed() {
+      this.$router.push({ path: "/newsfeed" });
     },
     search(e) {
       this.setStringKeyWord(e.target.value);

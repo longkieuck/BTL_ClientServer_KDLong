@@ -76,7 +76,7 @@
                 <input type="text" class="pass" placeholder="Nhập lại mật khẩu mới">
             </div> -->
           <div class="btn-forgot">
-            <div @click="goToNewFeed()" class="btn-cancel">
+            <div @click="goToNewsFeed()" class="btn-cancel">
               Hủy
             </div>
             <div @click="confirmChangePassWord()" class="btn-confirm">
@@ -122,8 +122,8 @@ export default {
     ...mapActions("user", [
       "setDefaultForState"
     ]),
-    goToNewFeed() {
-      this.$router.replace({ path: "/newfeed" });
+    goToNewsFeed() {
+      this.$router.replace({ path: "/newsfeed" });
     },
     confirmChangePassWord() {
       if (this.user.Id) {

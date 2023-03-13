@@ -10,12 +10,12 @@
           <div class="title-name">
             <div class="name">
 
-              <h1 style="font-size: 55px;color: #2181e7">MTA Social Network</h1>
+              <h1 style="font-size: 55px;color: #2181e7">FakeBook Mạng xã hội</h1>
             </div>
             <div class="imformation-name">
               <div class="flex">
                 <h1 class="name-details">
-                  MTA Social Network giúp cán bộ kết nối và chia sẻ với mọi người trong học viện
+                  Lan tỏa văn hóa doanh nghiệp
                 </h1>
               </div>
             </div>
@@ -72,7 +72,7 @@
     </div>
     <!-- footer -->
     <div class="footer">
-      <h3 class="footer-name">Bản quyền thuộc về @MTA</h3>
+      <h3 class="footer-name">Bản quyền thuộc về @FakeBook</h3>
     </div>
      <!-- modal -->
   </div>
@@ -111,7 +111,7 @@ export default {
           if(this.UserName == 'admin' && this.Password == 'admin'){
             this.$router.push({ path: "/admin" });
           }else{
-            this.$router.push({ path: "/newfeed" });
+            this.$router.push({ path: "/newsfeed" });
           }
         } else {
           this.showNotification(res.Message, "error");
