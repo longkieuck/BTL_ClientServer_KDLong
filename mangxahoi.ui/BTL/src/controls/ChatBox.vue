@@ -38,6 +38,7 @@
           ></div>
           <div v-else class="my-chat">
             {{ msg.Content }}
+            
           </div>
         </div>
       </div>
@@ -61,7 +62,6 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { BASE_URL } from "../configs/index";
-
 export default {
   data() {
     return {
@@ -81,12 +81,10 @@ export default {
     scrollToBottomChatBox() {
       this.webSocket.emit("message", this.userChat.Id);
       this.webSocket.emit("notifyMess", this.userChat.Id);
-      let container = this.$el.querySelector('#scrollingChat')
-      container.scrollTop = container.scrollHeight
     },
     goToProfie(id) {
       this.$router.push({ name: "profile", params: { id: id } });
-    },
+    }
   },
   computed: {
     ...mapState({
@@ -99,9 +97,14 @@ export default {
     }),
   },
   watch: {
-    isShowChatBox() {
-      this.scrollToBottomChatBox();
-    },
+    listMessage(){
+      if(this.$el && typeof this.$el.querySelector == 'function' ){  
+        this.$nextTick(() => {
+          let container = this.$el.querySelector('#scrollingChat')
+          container.scrollTop = container.scrollHeight
+        });
+      }
+    }
   },
 };
 </script>
