@@ -45,10 +45,10 @@
         </div>
           <div class="more-comment">
             <!-- tổng số like và cmt -->
-            <div class="more-comment-text" @click="showOldComment" v-if="isShowOldComment">
-              Xem thêm luận
+            <div class="more-comment-text" @click="showOldComment" v-if="isShowOldComment && post.CommentCount >0">
+              Xem bình luận
             </div>
-            <div class="more-comment-text" @click="hidenComment" v-if="!isShowOldComment">
+            <div class="more-comment-text" @click="hidenComment" v-if="!isShowOldComment && post.CommentCount >0">
               Ẩn bình luận
             </div>
           </div>

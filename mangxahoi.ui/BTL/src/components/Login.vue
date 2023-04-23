@@ -84,9 +84,6 @@
 import { mapActions } from "vuex";
 export default {
   name: "Login",
-  created(){
-    console.log(this.$commonFunc.intance);
-  },
   methods: {
     ...mapActions("user", ["setUser"]),
     showFormRegister() {
