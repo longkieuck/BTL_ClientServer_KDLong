@@ -105,7 +105,7 @@ export default {
           delete userData.Password;
           this.setUser(userData);
           localStorage.setItem("currentUser", JSON.stringify(userData));
-          if(this.UserName == 'admin' && this.Password == 'admin'){
+          if(this.UserName == 'admin'){
             this.$router.push({ path: "/admin" });
           }else{
             this.$router.push({ path: "/newsfeed" });

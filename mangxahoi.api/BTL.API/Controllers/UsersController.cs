@@ -83,8 +83,18 @@ namespace SocialNetwork.Controllers
             ServiceResponse res = new ServiceResponse();
             try
             {
-                var userDb = await _db.UserTbs.Where(_ => _.UserName == user.UserName && _.Password == user.Password).ToListAsync();
+                var userDb = await _db.UserTbs.Where(_ => _.UserName == user.UserName).ToListAsync();
                 if (userDb == null || userDb.Count < 1)
+                {
+                    res.Message = SysMessage.LoginErr;
+                    res.ErrorCode = 404;
+                    res.Success = false;
+                    res.Data = null;
+                    return res;
+                }
+                // Verify the input password against the hashed password using bcrypt
+                bool passwordMatch = BCrypt.Net.BCrypt.Verify(user.Password, userDb[0].Password);
+                if (!passwordMatch)
                 {
                     res.Message = SysMessage.LoginErr;
                     res.ErrorCode = 404;
@@ -114,11 +124,28 @@ namespace SocialNetwork.Controllers
             ServiceResponse res = new ServiceResponse();
             try
             {
-                var userDb = await _db.UserTbs.FirstOrDefaultAsync(_ => _.Id == user.Id && _.Password == user.Password);
-                userDb.Password = user.NewPassword;
-                await _db.SaveChangesAsync();
-                res.Message = SysMessage.Success;
-                res.Success = true;
+                var userDb = await _db.UserTbs.FirstOrDefaultAsync(_ => _.Id == user.Id);
+
+                bool passwordMatch = BCrypt.Net.BCrypt.Verify(user.Password, userDb.Password);
+                if (passwordMatch)
+                {
+                    // Generate a salt for bcrypt encryption
+                    string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                    // Hash the password with bcrypt
+                    string hash = BCrypt.Net.BCrypt.HashPassword(user.NewPassword, salt);
+                    userDb.Password = hash;
+                    await _db.SaveChangesAsync();
+                    res.Message = SysMessage.Success;
+                    res.Success = true;
+                }
+                else
+                {
+                    res.Message = SysMessage.ErrorMsg;
+                    res.ErrorCode = 404;
+                    res.Success = false;
+                    res.Data = null;
+                }
+                
             }
             catch
             {
@@ -186,6 +213,13 @@ namespace SocialNetwork.Controllers
                 return res;
             }
             user.Id = Guid.NewGuid();
+
+
+            // Generate a salt for bcrypt encryption
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+            // Hash the password with bcrypt
+            string hash = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
+            user.Password = hash;
             if (user.objFile != null)
             {
                 if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))

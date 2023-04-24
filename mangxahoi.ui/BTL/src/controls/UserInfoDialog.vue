@@ -57,8 +57,10 @@
                 type="password"
                 placeholder="Mật khẩu"
                 v-model="userInfo.Password"
+                :disabled="formMode == 'Edit'"
               />
               <div
+                v-if="formMode == 'Add'"
                 @click="handleHidePass1()"
                 class="show-pass"
                 :class="{ 'hide-pass': isHidePass1 }"
@@ -99,7 +101,7 @@ export default {
     props:{
       formMode: {
         type: String,
-        default: 'ADD'
+        default: 'Add'
       },
       userEdit:{
         type: Object,
