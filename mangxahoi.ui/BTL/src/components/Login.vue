@@ -5,6 +5,7 @@
     
     <!-- body -->
     <div class="body">
+      <div class="loader" v-if="isMask"></div>
       <div class="container">
         <div class="container-title">
           <div class="title-name">
@@ -94,6 +95,7 @@ export default {
     },
     async login() {
       const me = this;
+      me.isMask = true;
       if (me.UserName && me.Password) {
         let params = {
           UserName : me.UserName,
@@ -110,10 +112,12 @@ export default {
           }else{
             this.$router.push({ path: "/newsfeed" });
           }
+          me.isMask = false;
         } else {
           this.showNotification(res.Message, "error");
           this.UserName = "";
           this.Password = "";
+          me.isMask = false;
         }
         
       } else {
@@ -121,6 +125,7 @@ export default {
           "Vui lòng nhập đầy đủ Tài khoản và Mật khẩu!",
           "error"
         );
+        me.isMask = false;
       }
     },
     showNotification(message, type) {
@@ -150,6 +155,7 @@ export default {
       dateFormat: "DD/MM/YYYY",
       url: null,
       file: null,
+      isMask:false
     };
   },
 };
