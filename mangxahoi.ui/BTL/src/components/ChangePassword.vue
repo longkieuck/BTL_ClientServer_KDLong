@@ -4,7 +4,7 @@
       <!-- header -->
       <div class="header">
         <a class="header-logo" href="../html/Login.html">
-          <span style="font-size:30px; color:  #2181e7;"> <b>fakebook</b></span>
+          <span style="font-size:30px; color:  #2181e7;"> <b>MyLo</b></span>
         </a>
       </div>
 
@@ -89,7 +89,7 @@
       <!-- footer -->
       <div class="footer">
         <h3 class="footer-name">
-          Bản quyền thuộc về @Fakebook
+          Bản quyền thuộc về @MyLo
         </h3>
       </div>
     </div>

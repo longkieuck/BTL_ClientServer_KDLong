@@ -3,7 +3,7 @@
       <div class="cover-logo">
         <div class="logo" @click="goToNewsFeed()"></div>
         <div class="app-name">
-          FAKEBOOK
+          MYLO
         </div>
       </div>
       <search-box/>

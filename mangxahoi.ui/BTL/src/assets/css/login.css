@@ -2,7 +2,7 @@
     overflow: hidden;
 }
 .cover-login .body {
-    padding: 20px 0px;
+    padding: 60px 0px;
     background-color: #edf0f5;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .cover-login .container-login {
-    width: 40%;
+    width: 400px;
 }
 
 .cover-login .form-login {

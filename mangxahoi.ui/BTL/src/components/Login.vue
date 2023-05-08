@@ -11,7 +11,7 @@
           <div class="title-name">
             <div class="name">
 
-              <h1 style="font-size: 55px;color: #2181e7">FakeBook Mạng xã hội</h1>
+              <h1 style="font-size: 55px;color: #2181e7">MyLo Mạng xã hội</h1>
             </div>
             <div class="imformation-name">
               <div class="flex">
@@ -73,7 +73,7 @@
     </div>
     <!-- footer -->
     <div class="footer">
-      <h3 class="footer-name">Bản quyền thuộc về @FakeBook</h3>
+      <h3 class="footer-name">Bản quyền thuộc về @MyLo</h3>
     </div>
      <!-- modal -->
   </div>
