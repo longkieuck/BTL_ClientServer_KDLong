@@ -3,7 +3,7 @@
     <div class="header" style="display: flex; justify-content: space-between">
       <div class="cover-logo">
         <div class="logo"></div>
-        <div class="app-name">FAKEBOOK</div>
+        <div class="app-name">MYLO</div>
       </div>
       <search-box />
       <div class="cover-right-header-admin">
@@ -200,10 +200,10 @@ export default {
           width: "150",
         },
         {
-          title: "operation",
+          title: "Chức năng",
           dataIndex: "operation",
           scopedSlots: { customRender: "operation" },
-          width: "100",
+          width: "120",
           fixed: 'right',
           align:'center'
         },
@@ -236,10 +236,10 @@ export default {
           width: "150",
         },
         {
-          title: "operation",
+          title: "Chức năng",
           dataIndex: "operation",
           scopedSlots: { customRender: "operation" },
-          width: "100",
+          width: "120",
           fixed: 'right',
           align:'center'
         },
@@ -542,5 +542,8 @@ item-descrip .avatar {
 }
 .ant-table-fixed-left, .ant-table-fixed-right{
   z-index: 0 !important;
+}
+.ant-table-body-inner, .ant-table-body{
+  max-height: none !important;
 }
 </style>

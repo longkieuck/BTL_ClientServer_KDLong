@@ -15,8 +15,8 @@
           </div>
           <div class="top-name">
             <div class="name">
-              <div class="name-right" style="margin-left: -20px;">
-                <span style="font-size: 20px; color: #1890ff;"
+              <div class="name-right" style="margin-left: -60px;">
+                <span style="font-size: 20px;"
                   ><b>{{ userProfile.FullName }}</b></span
                 >
               </div>
