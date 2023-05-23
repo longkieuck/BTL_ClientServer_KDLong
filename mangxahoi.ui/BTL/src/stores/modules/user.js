@@ -82,7 +82,7 @@ const actions = {
         })
             .then(res =>{
                     context.state.listMessNotify = res.data.Data
-                    if(JSON.stringify(res.data.Data) != JSON.stringify(context.state.loadMessNotify)){
+                    if(res.data.Data && res.data.Data.length > 0){
                         context.state.messCount = 1
                     }else{
                         context.state.messCount = 0

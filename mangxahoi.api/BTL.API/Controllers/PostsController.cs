@@ -335,7 +335,7 @@ namespace SocialNetwork.Controllers
         public async Task<ActionResult<PagingData>> GetPostComment(Guid? Id, [FromQuery] int? page = 1, [FromQuery] int? record = 10)
         {
             var pagingData = new PagingData();
-            List<Comment> records = await _db.Comments.Where(_=>_.PostId == Id).OrderByDescending(x => x.CreateDate).ToListAsync();
+            List<Comment> records = await _db.Comments.Where(_=>_.PostId == Id).OrderBy(x => x.CreateDate).ToListAsync();//OrderByDescending
             //Tổng số bản ghi
             pagingData.TotalRecord = records.Count();
             //Tổng số trangalue

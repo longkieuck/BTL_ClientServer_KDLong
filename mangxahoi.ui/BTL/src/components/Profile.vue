@@ -1,7 +1,7 @@
 <template>
   <div
     class="cover-profile cover-newfeed"
-    style="overflow-y: unset; background: #F0F2F5; height: auto;"
+    style="overflow-y: unset; background: #F0F2F5;"
   >
     <!-- header -->
     <Header style="right:0px"/>
@@ -128,7 +128,7 @@
           </div>
           <div class="personal">
             <PostBox v-for="(post) in listPost" :key="post.Id" :post="post" @removePost="handleRemovePost"/>
-            <div class="cover-pagination-post">
+            <div class="cover-pagination-post" v-if="listPost.length > 0">
               <a-pagination
                 class="pagination-post"
                 v-model="postPage"
